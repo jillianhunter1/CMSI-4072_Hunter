@@ -1,0 +1,38 @@
+
+CMSI 4072 Spring 2026
+Project Proposal Feedback
+Project: Schedulr
+=========================
+Proposal Document [2 points]:
+   Verbal Description:
+      Your description clearly explains what the system does, how it works
+      (multi-model comparison and consensus extraction), and what makes it
+      distinct.  This exceeds the requirement ~ it’s concise, clear, and
+      technically accurate.  You provide a clear, structured feature list,
+      You clearly identify your users, as well as your hardware and software
+      requirements.
+
+   Justification:
+      You address how the project applies previous learning and extends it,
+      and you clearly justify that the difficulty is moderate and realistic.
+      You explain using an incremental development path developing core
+      features first, advanced features later which fits with one-semester
+      feasibility.  This meets the requirement well.
+
+
+Proposal Presentation [Slides and video] [3 points]:
+   Slides:
+      Your slides are very nice!  I like the color scheme and the graphics
+      on the slide backgrounds.  The layout is great with the 'pink snake'
+      theme.  The titles on each slide are striking, but they tend to limit
+      the amount of information.  Perhaps consider making the text more
+      brief and leave more of the information to what you will SAY instead
+      of what the audience READS.  This is especially true on slide two...
+
+   Video:
+
+
+Summary:
+--------
+
+Nice job overall!  Keep up the good work.  Will update after video is posted.
