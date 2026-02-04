@@ -1,7 +1,7 @@
 
 CMSI 4072 Spring 2026
 Project Proposal Feedback
-Project: Schedulr
+Project: Fusion
 =========================
 Proposal Document [2 points]:
    Verbal Description:
@@ -29,10 +29,23 @@ Proposal Presentation [Slides and video] [3 points]:
       brief and leave more of the information to what you will SAY instead
       of what the audience READS.  This is especially true on slide two...
 
-   Video:
 
 
 Summary:
 --------
 
 Nice job overall!  Keep up the good work.  Will update after video is posted.
+
+
+VIDEO EVALUATION
+================
+Very nice job on the presentation.  This is a very clear description of what
+you plan for the application.  It does sound like you are reading from a
+script or a notes sheet, but you're not simply reading the text on the slide
+which is good.  Ultimately this is a very timely project and a good use of
+A.I. which has an important socially relevant component.
+
+I'm really looking forward to seeing this project in action, Jillian!  Very
+cool...
+
+Well done on this.  Five out of Five points on this deliverable.
