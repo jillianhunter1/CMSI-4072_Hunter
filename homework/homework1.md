@@ -72,12 +72,12 @@ Task	Time (Days)	Predecessors
  P. Zombie animator	6	 O
  Q. Character testing	4	 K, M
  R. Zombie testing	4	 K, N
-## Problem 4.2, Stephens page 78
+## Problem 4.2, Stephens page 78 DO THIS
 
 Use critical path methods to find the total expected time from the project's start for each task's completion.
 Find the critical path. What are the tasks on the critical path?
 What is the total expected duration of the project in working days?
-## Problem 4.4, Stephens page 78
+## Problem 4.4, Stephens page 78 DO THIS
 
 Build a Gantt chart for the critical path you drew in Exercise 2. Start on Wednesday, January 1, 2024, and don't work on weekends or the following holidays:
 
@@ -89,9 +89,10 @@ Holiday	Date
  Alien Overloard Appreciation Day	March 26
  Income Tax Day	April 15
 ## Problem 4.6, Stephens page 79
-
-In addition to losing time from vacation and sick leave, projects can suffer from problems that just strike out of nowhere, like a bad version of deus ex machina. For example, senior management could decide to switch your target platform from Windows desktop PCs to the latest smartwatch technology. Or a pandemic, hurricane, trade war, earthquake, alien invasion, and so on could delay the shipment of your new servers. [Not that anything as far-fetched as a pandemic might occur, right?] Or one of your developers might move to Iceland, which is a real nice place to raise your kids up. How can you handle these sorts of completely unpredictable problems?
-
+How can you handle these sorts of completely unpredictable problems?
+- Identify potential risks early and determine their likelihood and impact. For unpredictable events, this involves acknowledging the possibility of "unknown unknowns."
+- Add extra time to the overall project schedule that is not assigned to any specific task. This "slack" acts as a safety net to absorb the impact of unforeseen delays without immediately pushing back the final delivery date.
+- Use tracking tools to identify as soon as a project begins to slip so that management can make informed decisions, such as cutting features or extending deadlines, rather than ignoring the problem.
 
 ## Problem 4.8, Stephens page 79
 According to your textbook, what are the two biggest mistakes you can make while tracking tasks?
@@ -143,7 +144,7 @@ List five characteristics of good requirements.
 Yes, there are requirements in all three categories (Business, User, and Functional).
 
 
-## Problem 5.9, Stephens page 115
+## Problem 5.9, Stephens page 115 DO THIS
 
 Figure 5-1 [right] shows the design for a simple hangman game that will run on smartphones. When you click the New Game button, the program picks a random mystery word from a large list and starts a new game. Then if you click a letter, either the letter is filled in where it appears in the mystery word, or a new piece of Mr. Bones's skeleton appears. In either case, the letter you clicked is grayed out so that you don't pick it again. If you guess all the letters in the mystery word, the game displays a message that says, "Contratulations, you won!" If you build Mr. Bones's complete skeleton, a message says, "Sorry, you lost."
 
