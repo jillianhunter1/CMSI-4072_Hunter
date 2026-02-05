@@ -45,8 +45,8 @@ Editing Locks:
 Metadata and Notes: 
 - GitHub focus heavily on "commit messages" or notes indicating why a change was made, which is a primary feature for developers, whereas this is often a secondary or less common feature in basic document management.
 ## Problem 2.5, Stephens page 27
-
 What does JBGE stand for and what does it mean?
+- The JBGE ("Just Barley Good Enough") philosophy suggests that developers should provide only the absolute minimum amount of documentation and comments necessary to understand the code.
 
  
 
