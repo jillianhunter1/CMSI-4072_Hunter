@@ -3,7 +3,7 @@ The Consensus AI Web Application is a meta-analysis tool designed to aggregate a
 
 The remainder of this document is structured as follows. Section 5.2 contains the Functional Requirements, broken down by the User Interface, API Integration, and Consensus Engine. Section 5.3 contains the Performance Requirements regarding latency and data accuracy. Section 5.4 contains the Environment Requirements for both the development and execution phases of the project.
 
-5.2 Functional Requirements
+## 5.2 Functional Requirements
 The functional requirements define the core capabilities of the application. The completed system will provide a way for users to input prompts, manage multiple AI connections simultaneously, and view an analyzed synthesis of model outputs. It will specifically handle the normalization of different API response formats and the calculation of semantic similarity.
 
 5.2.1 Graphical User Interface (GUI)
@@ -46,7 +46,7 @@ This is the core logic of the application which analyzes the text and identifies
 
 Points of total disagreement should be omitted from the consensus or flagged as "Contested."
 
-5.3 Performance Requirements
+## 5.3 Performance Requirements
 Performance requirements ensure the system is usable and reliable within the constraints of third-party API dependencies.
 
 5.3.1 Response Latency
@@ -59,7 +59,7 @@ This limit includes the time for semantic analysis and summarization.
 
 5.3.2.1 The backend shall handle at least five concurrent user requests without a degradation in processing speed.
 
-5.4 Environment Requirements
+## 5.4 Environment Requirements
 5.4.1 Development Environment Requirements
 
 The development environment includes the tools used to build and test the application before deployment.
