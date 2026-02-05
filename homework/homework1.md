@@ -48,6 +48,103 @@ Metadata and Notes:
 What does JBGE stand for and what does it mean?
 - The JBGE ("Just Barley Good Enough") philosophy suggests that developers should provide only the absolute minimum amount of documentation and comments necessary to understand the code.
 
- 
 
- 
+Table 4.2 [below] summarizes some of the classes and modules you might need (and their unreasonably optimistic expected times) to develop players and zombies for the game. (The program would also need lots of other pieces not listed here to handle other parts of the game.)
+
+Use the following table of data for Exercises 4.2 and 4.4.
+
+Task	Time (Days)	Predecessors
+ A. Robotic control module	5	 —
+ B. Texture library	5	 C
+ C. Texture editor	4	 —
+ D. Character editor	6	 A, G, I
+ E. Character animator	7	 D
+ F. Artificial intelligence (for zombies)	7	 —
+ G. Rendering engine	6	 —
+ H. Humanoid base classes	3	 —
+ I. Character classes	3	 H
+ J. Zombie classes	3	 H
+ K. Test environment	5	 L
+ L. Test environment editor	6	 C, G
+ M. Character library	9	 B, E, I
+ N. Zombie library	15	 B, J, O
+ O. Zombie editor	5	 A, G, J
+ P. Zombie animator	6	 O
+ Q. Character testing	4	 K, M
+ R. Zombie testing	4	 K, N
+## Problem 4.2, Stephens page 78
+
+Use critical path methods to find the total expected time from the project's start for each task's completion.
+Find the critical path. What are the tasks on the critical path?
+What is the total expected duration of the project in working days?
+## Problem 4.4, Stephens page 78
+
+Build a Gantt chart for the critical path you drew in Exercise 2. Start on Wednesday, January 1, 2024, and don't work on weekends or the following holidays:
+
+Holiday	Date
+ New Year's Day	January 1
+ Martin Luther King Day	January 20
+ President's Day	February 17
+ St. Valentine's Day	February 14
+ Alien Overloard Appreciation Day	March 26
+ Income Tax Day	April 15
+## Problem 4.6, Stephens page 79
+
+In addition to losing time from vacation and sick leave, projects can suffer from problems that just strike out of nowhere, like a bad version of deus ex machina. For example, senior management could decide to switch your target platform from Windows desktop PCs to the latest smartwatch technology. Or a pandemic, hurricane, trade war, earthquake, alien invasion, and so on could delay the shipment of your new servers. [Not that anything as far-fetched as a pandemic might occur, right?] Or one of your developers might move to Iceland, which is a real nice place to raise your kids up. How can you handle these sorts of completely unpredictable problems?
+
+
+## Problem 4.8, Stephens page 79
+According to your textbook, what are the two biggest mistakes you can make while tracking tasks?
+- Ignoring the problem: The biggest mistake is to ignore a slipping task and hope the time can be made up later; unless there is a specific reason to believe you can catch up, you must assume you will fall farther behind.
+
+- Adding manpower to a late project: The second biggest mistake is to add extra developers to a late task and assume they can reduce the time needed to finish it, as the time required to get new people up to speed often makes the project even later
+
+## Problem 5.1, Stephens page 114
+List five characteristics of good requirements.
+1. Clear: They must be concise, easy to understand, and stated in concrete, no-nonsense terms.
+
+2. Unambiguous: They must be worded so that they cannot be interpreted in more than one way.
+
+3. Consistent: They must not contradict each other and should not provide so many constraints that the problem becomes unsolvable.
+
+4. Prioritized: They should be categorized (e.g., using the MOSCOW method) so that low priority items can be deferred if time or budget runs out.
+
+5. Verifiable: They must be limited and precisely defined so it is easy to determine whether the finished application actually meets them.
+
+
+## Problem 5.3, Stephens page 114
+
+### Requirement Categorization
+
+* **Business Requirements** :
+* **g.** Make uploads/downloads transfer at least 8 Mbps. 
+
+* **User Requirements** (What the user can do):
+* **a.** Allow users to monitor uploads/downloads while away from the office.
+* **b.** Let the user specify website log-in parameters...
+* **c.** Let the user specify upload/download parameters...
+* **d.** Let the user select an Internet location, a local file, and a time...
+* **e.** Let the user schedule uploads/downloads at any time.
+* **l.** Let the user empty the log.
+* **m.** Display reports of upload/download attempts.
+* **n.** Let the user view the log reports on a remote device such as a phone.
+
+* **Functional Requirements** (How the system behaves internally):
+* **f.** Allow uploads/downloads to run at any time.
+* **h.** Run uploads/downloads sequentially.
+* **i.** If an upload/download is scheduled for a time when another is in progress, it waits until the other one finishes.
+* **j.** Perform scheduled uploads/downloads.
+* **k.** Keep a log of all attempted uploads/downloads and whether they succeeded.
+* **o.** Send an e-mail to an administrator if an upload/download fails...
+* **p.** Send a text message to an administrator if an upload/download fails...
+
+
+**Are there requirements in every category?**
+Yes, there are requirements in all three categories (Business, User, and Functional).
+
+
+## Problem 5.9, Stephens page 115
+
+Figure 5-1 [right] shows the design for a simple hangman game that will run on smartphones. When you click the New Game button, the program picks a random mystery word from a large list and starts a new game. Then if you click a letter, either the letter is filled in where it appears in the mystery word, or a new piece of Mr. Bones's skeleton appears. In either case, the letter you clicked is grayed out so that you don't pick it again. If you guess all the letters in the mystery word, the game displays a message that says, "Contratulations, you won!" If you build Mr. Bones's complete skeleton, a message says, "Sorry, you lost."
+
+Brainstorm this application and see if you can think of ways you might change it. Use the MOSCOW method to prioritize your changes.
