@@ -98,7 +98,7 @@ Holiday	Date
  St. Valentine's Day	February 14
  Alien Overloard Appreciation Day	March 26
  Income Tax Day	April 15
-![Gannt](images/GANNT.png)
+![Gannt](Homework1/GANNT.png)
 ## Problem 4.6, Stephens page 79
 ## Problem 4.6, Stephens page 79
 How can you handle these sorts of completely unpredictable problems?
