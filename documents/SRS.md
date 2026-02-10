@@ -43,7 +43,6 @@ This is the core logic of the application which analyzes the text and identifies
 5.2.3.2 The system shall calculate a similarity score between model response fragments.
 
 5.2.3.3 The system shall generate a summary representing only the points that exceed a defined similarity threshold.
-
 Points of total disagreement should be omitted from the consensus or flagged as "Contested."
 
 # 5.3 Performance Requirements
@@ -51,16 +50,15 @@ Performance requirements ensure the system is usable and reliable within the con
 
 ## 5.3.1 Response Latency
 
-5.3.1.1 The application shall display the final consensus within 15 seconds of the user's submission, assuming all APIs respond within that timeframe.
-
+5.3.1.1 The application shall initiate the semantic analysis phase no later than 12 seconds after the user submission, regardless of whether all APIs have completed their response
 This limit includes the time for semantic analysis and summarization.
-
+If an API has not responded by this threshold, it will be excluded from the consensus.
 ## 5.3.2 Concurrency
 
-5.3.2.1 The backend shall handle at least five concurrent user requests without a degradation in processing speed.
-
+5.3.2.1 The backend shall process up to five concurrent user requests while maintaining a total processing time of under 20 seconds per request.
 # 5.4 Environment Requirements
 ## 5.4.1 Development Environment Requirements
+Python is required to leverage the learn and sentence transformers libraries, which are essential for calculating vector embeddings and semantic similarity. Visual Studio Code is used to maintain a consistent development environment across the project via workspace configurations.
 
 The development environment includes the tools used to build and test the application before deployment.
 Operating System:  macOS 
