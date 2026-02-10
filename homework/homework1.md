@@ -72,7 +72,7 @@ Task	Time (Days)	Predecessors
  P. Zombie animator	6	 O
  Q. Character testing	4	 K, M
  R. Zombie testing	4	 K, N
-## Problem 4.2, Stephens page 78 DO THIS
+## Problem 4.2, Stephens page 78
 
 Use critical path methods to find the total expected time from the project's start for each task's completion.
 Find the critical path. What are the tasks on the critical path?
@@ -87,7 +87,7 @@ Critical Paths: There are two parallel critical branches at the start that conve
 Path 1: G → D → E → M → Q
 
 Path 2: H → I → D → E → M → Q
-## Problem 4.4, Stephens page 78 DO THIS
+## Problem 4.4, Stephens page 78 
 
 Build a Gantt chart for the critical path you drew in Exercise 2. Start on Wednesday, January 1, 2024, and don't work on weekends or the following holidays:
 
@@ -98,8 +98,7 @@ Holiday	Date
  St. Valentine's Day	February 14
  Alien Overloard Appreciation Day	March 26
  Income Tax Day	April 15
-
-
+SEE ATTACHED GANTT CHART
  
 ## Problem 4.6, Stephens page 79
 How can you handle these sorts of completely unpredictable problems?
@@ -157,8 +156,46 @@ List five characteristics of good requirements.
 Yes, there are requirements in all three categories (Business, User, and Functional).
 
 
-## Problem 5.9, Stephens page 115 DO THIS
+## Problem 5.9, Stephens page 115
 
 Figure 5-1 [right] shows the design for a simple hangman game that will run on smartphones. When you click the New Game button, the program picks a random mystery word from a large list and starts a new game. Then if you click a letter, either the letter is filled in where it appears in the mystery word, or a new piece of Mr. Bones's skeleton appears. In either case, the letter you clicked is grayed out so that you don't pick it again. If you guess all the letters in the mystery word, the game displays a message that says, "Contratulations, you won!" If you build Mr. Bones's complete skeleton, a message says, "Sorry, you lost."
 
 Brainstorm this application and see if you can think of ways you might change it. Use the MOSCOW method to prioritize your changes.
+
+1. Must Have 
+
+Categorized Word Lists: Instead of one "large list," players should choose categories (e.g., Animals, Movies, Tech). This makes the game feel more structured.
+
+Responsive Layout: The UI must adapt to different screen sizes and orientations (Portrait vs. Landscape).
+
+Visual Feedback for Wins/Losses: Clearer, more engaging endgame screens than just a simple text message.
+
+Input Validation: Ensuring the keyboard only allows alphabetical characters and handles "New Game" resets properly.
+
+2. Should Have 
+
+Difficulty Settings: Easy (short words/more guesses), Medium, and Hard (long words/fewer guesses).
+
+Hint System: A button that reveals a letter or gives a definition in exchange for points.
+
+Score Tracking: A "Current Streak" and "High Score" counter to keep players coming back.
+
+Sound Effects: "Click" sounds for letters, a "Success" chime, and a "Rattle" when a bone appears.
+
+3. Could Have 
+
+Themed Avatars: Instead of just "Mr. Bones," let players unlock different characters or outfits to be built piece by piece.
+
+Dark Mode Support: A system-level toggle for night-time play.
+
+Social Sharing: A button to share a "Win" graphic or your current streak on social media.
+
+Haptic Feedback: Subtle vibrations when a player makes an incorrect guess.
+
+4. Won't Have 
+
+Real-time Multiplayer: Connecting two players over the internet is technically complex and changes the "simple" nature of the design.
+
+In-App Purchases: For a simple learning project, we’ll avoid the complexity of payment gateways and digital currency.
+
+3D Animations: Keeping the skeleton as 2D art simplifies development and ensures it runs on older smartphones.
