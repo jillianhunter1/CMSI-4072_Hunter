@@ -98,7 +98,8 @@ Holiday	Date
  St. Valentine's Day	February 14
  Alien Overloard Appreciation Day	March 26
  Income Tax Day	April 15
-![GANTT](Homework1/Homework1/GANTT.png) 
+![Gannt](images/GANNT.png)
+## Problem 4.6, Stephens page 79
 ## Problem 4.6, Stephens page 79
 How can you handle these sorts of completely unpredictable problems?
 - Identify potential risks early and determine their likelihood and impact. For unpredictable events, this involves acknowledging the possibility of "unknown unknowns."
