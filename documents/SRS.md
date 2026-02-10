@@ -2,7 +2,7 @@
 Fusion is a meta-analysis tool designed to aggregate and compare natural language responses from multiple Large Language Models (LLMs) to identify points of agreement and divergence. The system provides a unified interface where a user submits a single prompt, which is then processed in parallel by various AI models (e.g., ChatGPT, Gemini, Claude). The backend performs semantic analysis on the resulting text to extract a "consensus" answer, filtering out model-specific hallucinations and highlighting high-confidence information.
 
 The remainder of this document is structured as follows. Section 5.2 contains the Functional Requirements, broken down by the User Interface, API Integration, and Consensus Engine. Section 5.3 contains the Performance Requirements regarding latency and data accuracy. Section 5.4 contains the Environment Requirements for both the development and execution phases of the project.
-![  Fusion UML System Diagram](images/UML Visual.png)
+![  Fusion UML System Diagram](images/UML_Visual.png)
 # 5.2 Functional Requirements
 The functional requirements define the core capabilities of the application. The completed system will provide a way for users to input prompts, manage multiple AI connections simultaneously, and view an analyzed synthesis of model outputs. It will specifically handle the normalization of different API response formats and the calculation of semantic similarity.
 
