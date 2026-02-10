@@ -77,6 +77,16 @@ Task	Time (Days)	Predecessors
 Use critical path methods to find the total expected time from the project's start for each task's completion.
 Find the critical path. What are the tasks on the critical path?
 What is the total expected duration of the project in working days?
+
+Total Expected Duration: 32 working days.
+
+Critical Path Tasks: The tasks with zero slack are G, H, I, D, E, M, and Q.
+
+Critical Paths: There are two parallel critical branches at the start that converge at task D:
+
+Path 1: G → D → E → M → Q
+
+Path 2: H → I → D → E → M → Q
 ## Problem 4.4, Stephens page 78 DO THIS
 
 Build a Gantt chart for the critical path you drew in Exercise 2. Start on Wednesday, January 1, 2024, and don't work on weekends or the following holidays:
@@ -88,6 +98,9 @@ Holiday	Date
  St. Valentine's Day	February 14
  Alien Overloard Appreciation Day	March 26
  Income Tax Day	April 15
+
+
+ 
 ## Problem 4.6, Stephens page 79
 How can you handle these sorts of completely unpredictable problems?
 - Identify potential risks early and determine their likelihood and impact. For unpredictable events, this involves acknowledging the possibility of "unknown unknowns."
