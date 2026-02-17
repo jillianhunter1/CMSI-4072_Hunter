@@ -20,7 +20,7 @@ What kind of database structure and maintenance should the ClassyDraw applicatio
 File-Based Storage: ClassyDraw stores drawings in files rather than a relational database.
 Maintenance: Because it uses files, formal database maintenance is generally unnecessary and would be "overkill" for a simple drawing application
 
-## Problem 5.8, Stephens page 116 DO THIS
+## Problem 5.8, Stephens page 116 
 
 Draw a state machine diagram to let a program read floating point numbers in scientific notation as in +37 or -12.3e+17 (which means -12.3 x 1017). Allow both E and e for the exponent symbol. [Jeez, is this like Dr. Dorin's DFAs, or what???]
 ![State_Diagram](StateDiagram.png)
@@ -39,7 +39,7 @@ Non-Shared Properties: Rectangle and Ellipse have Width and Height; Star might h
 Properties shared by some but not others: Width and Height are shared by Rectangle and Ellipse but not by Line.
 Implementation: Shared properties should be implemented in a general parent class (like Drawable), while non-shared properties should be implemented in the specific child classes.
 
-## Problem 6.2, Stephens page 138 DO THIS
+## Problem 6.2, Stephens page 138 
 
 Draw an inheritance diagram showing the properties you identified for Exercise 6.1. [Create parent classes as needed, and don't forget the Drawable class at the top.]
 
