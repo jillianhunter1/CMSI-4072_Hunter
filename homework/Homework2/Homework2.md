@@ -23,7 +23,7 @@ Maintenance: Because it uses files, formal database maintenance is generally unn
 ## Problem 5.8, Stephens page 116 DO THIS
 
 Draw a state machine diagram to let a program read floating point numbers in scientific notation as in +37 or -12.3e+17 (which means -12.3 x 1017). Allow both E and e for the exponent symbol. [Jeez, is this like Dr. Dorin's DFAs, or what???]
-
+![State_Diagram](StateDiagram.png)
 ## Problem 6.1, Stephens page 138
 
 Consider the ClassyDraw classes Line, Rectangle, Ellipse, Star, and Text.
@@ -43,5 +43,4 @@ Implementation: Shared properties should be implemented in a general parent clas
 
 Draw an inheritance diagram showing the properties you identified for Exercise 6.1. [Create parent classes as needed, and don't forget the Drawable class at the top.]
 
- 
-
+ ![Inheritance](Inheritance.png)
