@@ -76,3 +76,8 @@ button:hover {
 h1, h2, h3 {
   color: #007bff;
 }
+
+.error-message {
+  color: #dc3545;
+  margin: 1rem 0;
+}

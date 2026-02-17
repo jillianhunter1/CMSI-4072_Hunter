@@ -6,16 +6,27 @@ function App() {
   const [prompt, setPrompt] = useState('');
   const [responses, setResponses] = useState(null);
   const [similarities, setSimilarities] = useState('');
+  const [error, setError] = useState(null);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setResponses(null);
+    setSimilarities('');
     try {
       const response = await axios.post('http://localhost:3001/api/prompt', { prompt });
       setResponses(response.data.responses);
       setSimilarities(response.data.similarities);
     } catch (error) {
       console.error('Error fetching data:', error);
+      setError(`An error occurred while fetching data: ${error.message}. Please check the console for more details.`);
     }
   };
+
+  const handlePromptChange = (e) => {
+    setPrompt(e.target.value);
+    setError(null);
+  }
 
   return (
     <div className="App">
@@ -23,14 +34,15 @@ function App() {
         <h1>Fusion</h1>
         <p>Enter a prompt and see the combined power of AI</p>
       </header>
-      <div className="prompt-container">
+      <form className="prompt-container" onSubmit={handleSubmit}>
         <textarea
           value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
+          onChange={handlePromptChange}
           placeholder="Enter your prompt here"
         />
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
+        <button type="submit">Submit</button>
+      </form>
+      {error && <p className="error-message">{error}</p>}
       {responses && (
         <div className="results-container">
           <div className="responses">
