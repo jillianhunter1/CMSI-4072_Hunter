@@ -1,0 +1,67 @@
+
+Documentation Feedback ~ Deliverable #2
+Software Requirements Specification
+Initial Development Schedule
+CMSI 4072 Spring 2026
+=======================================
+
+COMPONENT BREAKDOWN:
+   Strengths
+      Major components are clearly described.
+      Responsibilities for each component are well stated.
+   Suggestions
+      Add a true top‑level component diagram with CSCs and their CSUs.
+      Decompose components further into submodules (e.g., response parser,
+         embedding module, async scheduler).
+      Add rationale for each component boundary.
+
+FUNCTIONAL REQUIREMENTS:
+   Strengths
+      Requirements are testable and clearly phrased.
+      Covers both user functions and backend logic.
+      Includes normalization and multi‑model handling logic.
+   Suggestions
+      Some requirements could be expanded (e.g., error handling for failed
+         API calls, malformed responses, network outages).
+      Could include user account features, history, or logging if intended.
+      Add constraints or thresholds for similarity scoring beyond general
+         descriptions.
+
+PERFORMANCE REQUIREMENTS:
+   Strengths
+      Performance targets are measurable.
+      Includes global timeout behavior for slow APIs.
+   Suggestions
+      Could specify acceptable API failure rate or retry behavior.
+      Could add throughput, memory limits, or uptime requirements.
+
+ENVIRONMENT REQUIREMENTS:
+   Strengths
+      Both development and execution environments are addressed.
+      Lists specific tools and runtime versions.
+   Suggestions
+      Could define hosting environment (e.g., cloud provider, container
+         requirements).
+      Could specify security requirements (API key storage, HTTPS).
+      Could include data storage or logging environment details.
+
+OVERALL ASSESSMENT:
+   Category                          Points
+   Component Breakdown               0.8/1
+   Functional Requirements           3.8/4
+   Performance Requirements          2.0/2
+   Environment Requirements          1.0/1
+                                     =====
+   Subtotal                          7.6/8
+   Preliminary Schedule              2.0/2
+   ------------------------------------------------------
+   Total Percentage:   9.6/10 = 96% which is an A
+
+You've met most of the desired measurements for this deliverable.  Your SRS
+is very well done but could benefit from at least incorporating a few of
+the suggestions to make it even more complete, like expanding the functional
+requirements, adding user account features, and adding constraints.
+
+Nice work on this deliverable ~ keep up the good work!
+
+
