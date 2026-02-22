@@ -1,0 +1,42 @@
+
+
+HW 2 - Stephens Book Chapters 5 and 6
+CMSI 4072 Spring 2026
+
+Category        Weight     Earned
+===========    ========    ======
+Problem 5.1    [ 5 pts.]      5.0
+Problem 5.2    [ 5 pts.]      5.0
+Problem 5.4    [ 5 pts.]      5.0
+Problem 5.6    [ 5 pts.]      5.0
+Problem 5.8    [10 pts.]     10.0
+Problem 6.1    [10 pts.]     10.0
+Problem 6.2    [10 pts.]      8.0
+
+       Subtotal [50 max]     50.0
+              Your Total     48.0
+
+         Letter grade   A
+
+=================
+SPECIFIC COMMENTS:
+
+Problem 5.1 ~ correct
+
+Problem 5.2 ~ correct
+
+Problem 5.4 ~ correct
+
+Problem 5.6 ~ correct
+
+Problem 5.8 ~ correct
+
+Problem 6.1 ~ correct
+
+Problem 6.2 ~ The class diagram is a bit off.  The star should be subclass
+   of "SizeDrawable".  Even better, make "SizeDrawable" into "LineDrawable"
+   and include "Line" under that, with a "FillableShape" class from which
+   you would subclass the other shapes.
+
+
+nice work!
