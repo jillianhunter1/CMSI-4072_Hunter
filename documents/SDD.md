@@ -59,9 +59,9 @@ When a user submits a prompt, the Request Orchestrator triggers parallel hooks t
 
 #### 6.2.3.1 Use Case Diagram
   
-
+![Use Case Diagram](images/Usecase.png)
 #### 6.2.3.2 Top-Level Class Diagram
   
-
+![Class Diagram](images/Classdiagram.png)
 #### 6.2.3.3 Sequence Diagram
-  
+![Sequence Diagram](images/Sequence.png)
