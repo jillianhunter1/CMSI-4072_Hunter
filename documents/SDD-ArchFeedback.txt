@@ -1,0 +1,112 @@
+
+Documentation Feedback ~ Deliverable #3
+Software Design Document ~ Architecture
+CMSI 4072 Spring 2026 ~ Project Fusion
+=======================================
+
+6.1 INTRODUCTION SECTION:
+   System objectives section
+      Strengths:
+         Lists concrete goals: centralized multi-LLM querying, agreement
+            scoring, consensus synthesis for high-confidence results
+      Suggestions:
+         Separate functional (orchestrate models, fuse answers) and
+            non-functional objectives (latency, availability, security,
+            cost).
+         Add measurable targets (e.g., p95 round-trip = X s;
+            availability = Y%).
+         Define fairness and quality objectives (e.g., bias checks,
+            confidence thresholds for displaying consensus).
+
+   Hardware, software, and human interfaces section
+      Strengths:
+         Human interface: responsive Next.js web GUI with a “Fusion View”
+            for highlighting overlaps is described.
+         Software interfaces: lists OpenAI, Google, and Anthropic APIs;
+            mentions LangChain orchestration; server-side HTTPS to
+            protect keys.
+         Hardware/deployment: cloud-hosted (Vercel) with server-side compute
+            is identified.
+      Suggestions:
+         Specify browser support, device assumptions, and accessibility
+            targets (e.g., WCAG level, keyboard navigation).
+         Expand software interface contracts: authentication method
+            (API keys, OAuth), request/response schemas, rate-limit handling,
+            and retries.
+         Clarify data protection: prompt and result retention policy, PII
+            rules, encryption at rest/in transit, and logging redaction.
+
+
+6.2 ARCHITECTURAL DESIGN SECTION:
+   Major softwre components section
+      Strengths:
+         Identifies three core components: Request Orchestrator, Vectorization
+            Service, and Consensus Engine, with clear high-level roles.
+      Suggestions:
+         Provide explicit interfaces for each component: inputs, outputs,
+            data types (e.g., string[], float[][]), and error codes/exception
+            paths.
+         Expand on dependency choices: which embedding providers are
+            supported, how providers are selected/fallback, and
+            model-version policy.
+         Capture failure modes and degraded behaviors (e.g., one model
+            times out; proceed with quorum of two; mark confidence
+            accordingly).
+         Note security aspects per component (secret management, least
+            privilege for API calls, validation of untrusted model
+            outputs).
+
+   Major software interactions section
+      Strengths:
+         Describes the core flow: user prompt -> parallel LLM calls via
+            LangChain -> vectorization -> similarity matrix -> UI fusion
+            visualization.
+      Suggestions:
+         Add a sequence diagram with timing notes (parallelization,
+            timeouts, retries) and data artifacts (raw text, embeddings,
+            scores).
+         The references to images are good but need embedded content.
+         Specify latency budgets per hop and overall SLOs, plus behavior
+            when exceeding them (e.g., return partial results with warnings).
+         Define caching strategy (prompt hash ? cached vectors/scores) and
+            idempotency for repeated prompts.
+         Clarify confidence aggregation: how consensus score maps to UI
+            highlights, thresholds for display, and tie-break rules
+
+   Architectural design diagrams section
+      Strengths:
+         The SDD references a use case, class, and sequence diagram, showing
+            an intent to cover multiple architectural views.
+      Suggestions:
+         Embed the diagrams (or append them) and add captions that explain
+            the viewpoint, scope, and key relationships.
+         Include a system context diagram and a component/deployment view
+            (frontend, backend, third-party APIs, secrets store).
+         Add a data-flow or C4 container diagram to make trust boundaries,
+            data stores, and external dependencies explicit.
+
+
+OVERALL ASSESSMENT:
+   INTRODUCTION                        1.0
+   System objectives                   1.0
+   H/W, S/W, Human I/F                 1.0
+
+   ARCHITECTURAL DESIGN SECTION:
+   Major softwre components            1.0
+   Major software interactions         1.0
+   Architectural design diagrams       5.0
+                                     ======
+   Subtotal                           10.0
+   ------------------------------------------------------
+   Total Percentage:  10/10 = 100% which is an A-plus
+
+Nie work here, Jillian!  Your SDD presents a clear intent and a solid
+starting structure for a consensus-driven AI system.  To reach full
+completeness against the CMSI template, add system context and architectural
+rationale, formalize component interfaces and failure handling, document
+non-functional targets, and embed diagrams with captions.  Excellent work
+on the diagrams!
+
+Keep up the good work!
+
+
