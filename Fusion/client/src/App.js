@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
+import Response from './components/Response';
 
 function App() {
   const [prompt, setPrompt] = useState('');
@@ -47,10 +48,8 @@ function App() {
         <div className="results-container">
           <div className="responses">
             <h2>Responses</h2>
-            <div className="response-box">
-              <h3>Claude</h3>
-              <p>{responses.claude}</p>
-            </div>
+            <Response title="ChatGPT" response={responses.chatGPT} />
+            <Response title="Claude" response={responses.claude} />
           </div>
           <div className="similarities">
             <h2>Similarities</h2>
