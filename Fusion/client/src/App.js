@@ -48,16 +48,8 @@ function App() {
           <div className="responses">
             <h2>Responses</h2>
             <div className="response-box">
-              <h3>ChatGPT</h3>
-              <p>{responses.chatGPT}</p>
-            </div>
-            <div className="response-box">
               <h3>Claude</h3>
               <p>{responses.claude}</p>
-            </div>
-            <div className="response-box">
-              <h3>Gemini</h3>
-              <p>{responses.gemini}</p>
             </div>
           </div>
           <div className="similarities">

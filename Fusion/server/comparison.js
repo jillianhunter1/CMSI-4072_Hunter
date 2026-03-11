@@ -19,15 +19,16 @@ function tokenize(text) {
 }
 
 function findSimilarities(responses) {
-  const { chatGPT, claude, gemini } = responses;
+  const { chatGPT, claude } = responses;
+
+  if (!chatGPT || !claude) {
+    return '';
+  }
 
   const tokenizedChatGPT = new Set(tokenize(chatGPT).filter(token => !stopWords.has(token)));
   const tokenizedClaude = new Set(tokenize(claude).filter(token => !stopWords.has(token)));
-  const tokenizedGemini = new Set(tokenize(gemini).filter(token => !stopWords.has(token)));
 
-  const commonTokens = [...tokenizedChatGPT].filter(token =>
-    tokenizedClaude.has(token) && tokenizedGemini.has(token)
-  );
+  const commonTokens = [...tokenizedChatGPT].filter(token => tokenizedClaude.has(token));
 
   return commonTokens.join(' ');
 }
