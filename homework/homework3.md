@@ -40,40 +40,40 @@ The location is known or accessible via GPS.   
 
 Suppose you've written an efficient isRelativelyPrime() method that takes two integers between -1 million and 1 million as parameters and returns true if they are relatively prime. Use either your favorite programming language or pseudocode to write a program that tests the isRelativelyPrime() method.
 [Hint: You may find it useful to write the isRelativelyPrime() method itself as well.]
+                
+                FUNCTION isRelativelyPrime(a, b):
+                    // Convert to positive since signs don't affect factors
+                    x = absoluteValue(a)
+                    y = absoluteValue(b)
+                
+                    // RULE: 1 and -1 are always relatively prime to everything
+                    IF x == 1 OR y == 1: 
+                        RETURN true
+                    
+                    // RULE: 0 is only relatively prime to 1 or -1
+                    IF x == 0 OR y == 0:
+                        RETURN (x == 1 OR y == 1)
+                
+                    // GENERAL CASE: If their Greatest Common Divisor is 1, they are coprime
+                    IF GCD(x, y) == 1:
+                        RETURN true
+                    ELSE:
+                        RETURN false
 
-FUNCTION isRelativelyPrime(a, b):
-    // Convert to positive since signs don't affect factors
-    x = absoluteValue(a)
-    y = absoluteValue(b)
-
-    // RULE: 1 and -1 are always relatively prime to everything
-    IF x == 1 OR y == 1: 
-        RETURN true
-    
-    // RULE: 0 is only relatively prime to 1 or -1
-    IF x == 0 OR y == 0:
-        RETURN (x == 1 OR y == 1)
-
-    // GENERAL CASE: If their Greatest Common Divisor is 1, they are coprime
-    IF GCD(x, y) == 1:
-        RETURN true
-    ELSE:
-        RETURN false
-
-// TEST PROGRAM: 
-    // Test 1: Standard coprime numbers
-    ASSERT isRelativelyPrime(8, 9) == true
-    // Test 2: Standard non-coprime numbers (both divisible by 7)
-    ASSERT isRelativelyPrime(21, 35) == false
-    // Test 3: Large boundary numbers
-    ASSERT isRelativelyPrime(1000000, 999999) == true
-    // Test 4: Negative number handling
-    ASSERT isRelativelyPrime(-1, 500) == true
-    // Test 5: The zero rule
-    ASSERT isRelativelyPrime(0, 1) == true
-    ASSERT isRelativelyPrime(0, 5) == false
-
-    PRINT "All tests passed successfully!"
+                // TEST PROGRAM: 
+                    // Test 1: Standard coprime numbers
+                    ASSERT isRelativelyPrime(8, 9) == true
+                    // Test 2: Standard non-coprime numbers (both divisible by 7)
+                    ASSERT isRelativelyPrime(21, 35) == false
+                    // Test 3: Large boundary numbers
+                    ASSERT isRelativelyPrime(1000000, 999999) == true
+                    // Test 4: Negative number handling
+                    ASSERT isRelativelyPrime(-1, 500) == true
+                    // Test 5: The zero rule
+                    ASSERT isRelativelyPrime(0, 1) == true
+                    ASSERT isRelativelyPrime(0, 5) == false
+                
+                    PRINT "All tests passed successfully!"
   
 ### Problem 8.3: What testing techniques did you use for the program in Exercise 8.1? [Exhaustive, black-box, white-box, or gray-box?]
 - Which ones could you use and under what circumstances? [Justify your answer with a short paragraph to explain.]        
@@ -87,26 +87,26 @@ Others: White-Box (to test every logical branch), Gray-Box (to test known loop b
 **Answer:** Exhaustive testing is primarily Black-Box because it verifies all possible inputs against expected outputs. However, it is also White-Box in practice because testing every input naturally exercises every possible execution path in the code.
 
 
-###Problem 8.11: Suppose you have three testers: Alice, Bob, and Carmen. You assign numbers to the bugs so the testers find the sets of bugs {1, 2, 3, 4, 5}, {2, 5, 6, 7}, and {1, 2, 8, 9, 10}. How can you use the Lincoln index to estimate the total number of bugs? How many bugs are still at large?
+### Problem 8.11: Suppose you have three testers: Alice, Bob, and Carmen. You assign numbers to the bugs so the testers find the sets of bugs {1, 2, 3, 4, 5}, {2, 5, 6, 7}, and {1, 2, 8, 9, 10}. How can you use the Lincoln index to estimate the total number of bugs? How many bugs are still at large?
 To estimate the total bugs using the Lincoln Index for Alice, Bob, and Carmen, you calculate the estimate for each pair and average them.
-
-1. Calculate Pair Estimates
-
-The formula is: (Bugs by Tester A × Bugs by Tester B) / Common Bugs
-
-Alice (5) & Bob (4): (5 × 4) / 2 common {2, 5} = 10.0
-
-Alice (5) & Carmen (5): (5 × 5) / 2 common {1, 2} = 12.5
-
-Bob (4) & Carmen (5): (4 × 5) / 1 common {2} = 20.0
-
-2. Final Estimate
-
-Average Estimate: (10 + 12.5 + 20) / 3 ≈ 14 bugs total
-
-Unique Bugs Found: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} = 10 bugs
-
-Bugs at Large: 14 (estimated) - 10 (found) = 4 bugs remaining
+                
+                1. Calculate Pair Estimates
+                
+                The formula is: (Bugs by Tester A × Bugs by Tester B) / Common Bugs
+                
+                Alice (5) & Bob (4): (5 × 4) / 2 common {2, 5} = 10.0
+                
+                Alice (5) & Carmen (5): (5 × 5) / 2 common {1, 2} = 12.5
+                
+                Bob (4) & Carmen (5): (4 × 5) / 1 common {2} = 20.0
+                
+                2. Final Estimate
+                
+                Average Estimate: (10 + 12.5 + 20) / 3 ≈ 14 bugs total
+                
+                Unique Bugs Found: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} = 10 bugs
+                
+                Bugs at Large: 14 (estimated) - 10 (found) = 4 bugs remaining
 
 
 ### Problem 8.12: What happens to the Lincoln estimate if the two testers don't find any bugs in common? What does it mean? Can you get a lower bound estimate of the number of bugs?         
