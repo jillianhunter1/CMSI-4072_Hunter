@@ -1,18 +1,18 @@
 ### Problem 7.1: The greatest common divisor (GCD) of two integers is the largest integer that evenly divides them both. For example, the GCD of 84 and 36 is 12, because 12 is the largest integer that evenly divides both 84 and 36. You can learn more about the GCD and the Euclidean algorithm, which you can find at en.wikipedia.org/wiki/Euclidean_algorithm. [Hint: It should take you only a few seconds to fix these comments. Don't make a career out of it.]           
 
-// Use Euclid's algorithm to calculate the GCD.    
-private long GCD(long a, long b)    
-{    
-    for (;;)    
-    {    
-        long remainder = a % b;    
-    
-        if (remainder == 0) return b;    
-     
-        a = b;    
-        b = remainder;    
-    }
-}
+        // Use Euclid's algorithm to calculate the GCD.    
+        private long GCD(long a, long b)    
+        {    
+            for (;;)    
+            {    
+                long remainder = a % b;    
+            
+                if (remainder == 0) return b;    
+             
+                a = b;    
+                b = remainder;    
+            }
+        }
 
 ### Problem 7.2: According to your textbook, under what two conditions might you end up with the bad comments shown in the previous code?             
 **Answer:** 
