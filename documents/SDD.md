@@ -77,6 +77,10 @@ Orchestrator-to-LLM Interface: Describes how LangChain normalizes the various sc
 Similarity Matrix: A 2D array (e.g., Float32Array) representing the cosine similarity between every pair of LLM responses.
 
 FusedResponse Object: A complex JSON object containing the original strings, their vector coordinates, and the final "consensus" text with metadata on confidence levels.
+## 6.3.4 
+![Sequence Diagram](images/Sequence.png)
+![Class Diagram](images/Classdiagram.png)
+![Use Case Diagram](images/Usecase.png)
 
 #### 6.4 Database Design and Description Section
 Fusion utilizes Supabase (PostgreSQL) to manage user sessions and history.
