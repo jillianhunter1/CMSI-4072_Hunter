@@ -81,6 +81,7 @@ FusedResponse Object: A complex JSON object containing the original strings, the
 ![Sequence Diagram](images/Sequence.png)
 ![Class Diagram](images/Classdiagram.png)
 ![Use Case Diagram](images/Usecase.png)
+![Swim Lane Diagram](images/SwimDiagram.png)
 
 #### 6.4 Database Design and Description Section
 Fusion utilizes Supabase (PostgreSQL) to manage user sessions and history.
