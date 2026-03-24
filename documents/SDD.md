@@ -78,17 +78,29 @@ Similarity Matrix: A 2D array (e.g., Float32Array) representing the cosine simil
 
 FusedResponse Object: A complex JSON object containing the original strings, their vector coordinates, and the final "consensus" text with metadata on confidence levels.
 ## 6.3.4 
+Sequence Diagram:
 ![Sequence Diagram](images/Sequence.png)
+Class Diagram:
 ![Class Diagram](images/Classdiagram.png)
+Use Case Diagram:
 ![Use Case Diagram](images/Usecase.png)
+Swim Lane Diagram:
 ![Swim Lane Diagram](images/SwimDiagram.png)
 
 #### 6.4 Database Design and Description Section
 Fusion utilizes Supabase (PostgreSQL) to manage user sessions and history.
 
-## 6.4.1 Database Design ER Diagram: 
-This will show the relationship between Users, Queries, and LLM_Responses. One Query has many Responses.
+## 6.4.1 Database Design ER Diagram Section
 
+The following Entity-Relationship Diagram illustrates the normalized data structure of the Fusion application. The architecture centers on the Queries table, which serves as the parent record for every user interaction.
+
+Users Table: Manages unique user identities and authentication timestamps.
+
+Queries Table: Stores the original user prompt and acts as the relational hub. It maintains a one-to-many relationship with LLM_Responses.
+
+LLM_Responses Table: Captures the unique output from each provider (GPT, Gemini, Grok). This table includes a vector column of type vector(1536) to store the high-dimensional embeddings.
+
+Consensus_Results Table: Stores the final "fused" output and the calculated confidence score, linked back to the originating query.
 ## 6.4.2 Database Access: 
 Access is managed via the Supabase Client SDK. The server-side logic handles all CRUD operations to ensure users can only view their own "Fusion" history.
 
