@@ -91,6 +91,7 @@ Swim Lane Diagram:
 Fusion utilizes Supabase (PostgreSQL) to manage user sessions and history.
 
 ## 6.4.1 Database Design ER Diagram Section
+![ER Diagram](images/ERD.png)
 
 The following Entity-Relationship Diagram illustrates the normalized data structure of the Fusion application. The architecture centers on the Queries table, which serves as the parent record for every user interaction.
 
