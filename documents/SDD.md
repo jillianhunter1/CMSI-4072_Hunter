@@ -40,3 +40,52 @@ When a user submits a prompt, the Request Orchestrator triggers parallel hooks t
 ![Class Diagram](images/Classdiagram.png)
 #### 6.2.3.3 Sequence Diagram
 ![Sequence Diagram](images/Sequence.png)
+
+#### 6.3 CSC and CSU Descriptions Section
+## 6.3.1 Detailed Class Descriptions Section
+
+## 6.3.1.1 LLMProvider (Base Class): An abstract class defining the standard interface for AI models.
+
+Fields: modelName (string), apiKey (string), temperature (float).
+
+Methods: generateResponse(prompt: string): Returns a raw string from the provider.
+
+## 6.3.1.2 ClaudeProvider / GPTProvider / GeminiProvider: Subclasses inheriting from LLMProvider that implement the specific API logic for each model.
+
+## 6.3.1.3 ConsensusEngine: The mathematical core of the app.
+
+Fields: threshold (float - the minimum similarity score to consider a "match").
+
+Methods: calculateSimilarity(vectors: number[][]): Returns a similarity matrix. findCentroid(responses: string[]): Identifies the most representative response.
+
+## 6.3.1.4 VectorService: Handles the transformation of text to math.
+
+Fields: embeddingModel (string).
+
+Methods: embedText(text: string): Calls the embedding API to return a vector.
+
+## 6.3.2 Detailed Interface Descriptions Section
+
+In Fusion, these descriptions focus on the data exchange between the Frontend (Next.js) and the Orchestration Layer (LangChain).
+
+Clien-to-Server Interface: Describes the JSON payload sent from the UI (user prompt, model toggles) to the /api/fuse endpoint.
+
+Orchestrator-to-LLM Interface: Describes how LangChain normalizes the various schemas from OpenAI, Google, and Claude into a unified format.
+
+## 6.3.3 Detailed Data Structure Descriptions Section
+
+Similarity Matrix: A 2D array (e.g., Float32Array) representing the cosine similarity between every pair of LLM responses.
+
+FusedResponse Object: A complex JSON object containing the original strings, their vector coordinates, and the final "consensus" text with metadata on confidence levels.
+
+#### 6.4 Database Design and Description Section
+Fusion utilizes Supabase (PostgreSQL) to manage user sessions and history.
+
+## 6.4.1 Database Design ER Diagram: 
+This will show the relationship between Users, Queries, and LLM_Responses. One Query has many Responses.
+
+## 6.4.2 Database Access: 
+Access is managed via the Supabase Client SDK. The server-side logic handles all CRUD operations to ensure users can only view their own "Fusion" history.
+
+## 6.4.3 Database Security: 
+We implement Row Level Security (RLS) policies in PostgreSQL. This ensures that even if a JWT is intercepted, data is isolated at the database level.
