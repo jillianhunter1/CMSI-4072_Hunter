@@ -1,6 +1,6 @@
 *“The Miracle” by Noni Olabisi*
 Olabisi-Exhibit.jpeg
-![Olabisi Exhibit](/Olabisi-Exhibit.jpeg)
+![Olabisi Exhibit](Olabisi-Exhibit.jpeg)
 
 Is this piece ART or CRAFT? Is it perhaps BOTH?
 - This piece is art, primarily because its value lies in its conceptual and emotional weight rather than its utility. However, it displays a high level of craft in its execution, specifically the anatomical shading of the hands and feet and the deliberate use of the yellow halo. In many ways, it is both. Craft is the "how", while art is the "why".
