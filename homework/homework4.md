@@ -1,7 +1,7 @@
 *“The Miracle” by Noni Olabisi*
 
 Is this piece ART or CRAFT? Is it perhaps BOTH?
-  This piece is art, primarily because its value lies in its conceptual and emotional weight rather than its utility. However, it displays a high level of craft in its execution, specifically the anatomical shading of the hands and feet and the deliberate use of the yellow halo. In many ways, it is both. Craft is the "how", while art is the "why".
+    This piece is art, primarily because its value lies in its conceptual and emotional weight rather than its utility. However, it displays a high level of craft in its execution, specifically the anatomical shading of the hands and feet and the deliberate use of the yellow halo. In many ways, it is both. Craft is the "how", while art is the "why".
 What about this selection drew you to it or caught your eye?
   What immediately catches my eye is the chromatic contrast. The deep, dark blues of the infant’s skin set against the fiery reds of the background create an instant pop.
 What kinds of feelings does the piece elicit when you see it?
