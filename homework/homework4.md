@@ -1,5 +1,4 @@
-*“The Miracle” by Noni Olabisi*
-Olabisi-Exhibit.jpeg
+** “The Miracle” by Noni Olabisi **
 ![Olabisi Exhibit](Olabisi-Exhibit.jpeg)
 
 Is this piece ART or CRAFT? Is it perhaps BOTH?
