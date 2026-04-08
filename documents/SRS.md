@@ -5,7 +5,6 @@ The remainder of this document is structured as follows. Section 5.2 contains th
 ![  Fusion UML System Diagram](images/UML_Visual.png)
 # 5.2 Functional Requirements
 The functional requirements define the core capabilities of the application. The completed system will provide a way for users to input prompts, manage multiple AI connections simultaneously, and view an analyzed synthesis of model outputs. It will specifically handle the normalization of different API response formats and the calculation of semantic similarity.
-
 ## 5.2.1 Graphical User Interface (GUI)
 
 The GUI provides a clean, web-based interaction point for the user. It allows for prompt entry and the visual representation of the final consensus.
