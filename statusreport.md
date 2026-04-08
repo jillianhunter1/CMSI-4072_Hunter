@@ -13,3 +13,7 @@
 - I have chat GPT and Claude implemented and working. I also have the consensus engine giving an accurtate response
 - My goal is to get Gemini implemented next and do some basic clean up on the consensus engine. Soon I will also have to clean up the UI
 - No concerns 
+4/8
+- Continued to try and implment Gemini, Running into some errors but should resolve.
+- My goal is to implement gemini and tune up the UI
+- No concerns 
