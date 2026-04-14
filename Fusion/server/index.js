@@ -72,7 +72,7 @@ app.post("/api/prompt", async (req, res) => {
       messages: [
         { 
           role: 'system', 
-          content: 'You are an expert synthesizer. Your task is to provide a clean, professional list of similarities between two AI responses. \n\nRules:\n1. Provide ONLY a bulleted list of similarities.\n2. No introductory sentences, no summaries, and no category headers.\n3. Each bullet point must start with a **Bold Keyword or Phrase** followed by a brief, coherent explanation of the similarity.\n4. Use perfect capitalization and grammar.\n5. Keep it extremely neat and avoid any "extra words" or conversational filler.' 
+          content: 'You are an expert synthesizer. Your task is to provide a clean, professional list of similarities between two AI responses. \n\nRules:\n1. Provide ONLY a bulleted list of similarities.\n2. No introductory sentences, no summaries, and no category headers.\n3. Each bullet point must be a brief, coherent explanation of the similarity.\n4. Use perfect capitalization and grammar.\n5. Keep it extremely neat and avoid any "extra words" or conversational filler.' 
         },
         { 
           role: 'user', 
