@@ -1,5 +1,4 @@
 require("dotenv").config();
-const { findSimilarities } = require("./comparison.js");
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
@@ -72,11 +71,11 @@ app.post("/api/prompt", async (req, res) => {
       messages: [
         { 
           role: 'system', 
-          content: 'You are an expert synthesizer. Your task is to provide a clean, professional list of similarities between two AI responses. \n\nRules:\n1. Provide ONLY a bulleted list of similarities.\n2. No introductory sentences, no summaries, and no category headers.\n3. Each bullet point must be a brief, coherent explanation of the similarity.\n4. Use perfect capitalization and grammar.\n5. Keep it extremely neat and avoid any "extra words" or conversational filler.' 
+          content: 'You are a high-precision entity extractor. Your ONLY task is to identify and list specific items or entities that appear in BOTH responses. \n\nSTRICT RULES:\n1. Output ONLY a bulleted list.\n2. NO FULL SENTENCES. NO EXPLANATIONS. NO VERBS.\n3. NO bolding and NO category headers.\n4. Each bullet must be 1-4 words maximum (e.g., "Harry Potter by J.K. Rowling").\n5. NO introductory or concluding text of any kind.\n6. DO NOT use words like "Both", "Shared", "Mentioned", or "Include".\n7. NO punctuation at the end of bullets.\n8. Return an empty string if no specific items overlap.' 
         },
         { 
           role: 'user', 
-          content: `Prompt: ${prompt}\n\nChatGPT Response: ${responses.chatGPT}\n\nClaude Response: ${responses.claude}` 
+          content: `List the specific shared entities from these two responses:\n\n1: ${responses.chatGPT}\n\n2: ${responses.claude}` 
         }
       ],
     });
