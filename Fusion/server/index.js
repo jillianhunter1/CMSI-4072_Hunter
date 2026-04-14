@@ -64,10 +64,24 @@ app.post("/api/prompt", async (req, res) => {
     const responses = {
       chatGPT: chatGPTResponse.data.choices?.[0]?.message?.content,
       claude: claudeResponse.data.content?.[0]?.text,
-      // gemini: geminiResponse.data.candidates?.[0]?.content?.parts?.[0]?.text,
     };
 
-    const similarities = findSimilarities(responses);
+    // Use OpenAI to synthesize a beautiful, formatted summary
+    const synthesisResponse = await openai.post('/chat/completions', {
+      model: 'gpt-3.5-turbo',
+      messages: [
+        { 
+          role: 'system', 
+          content: 'You are an expert synthesizer. Your task is to provide a clean, professional list of similarities between two AI responses. \n\nRules:\n1. Provide ONLY a bulleted list of similarities.\n2. No introductory sentences, no summaries, and no category headers.\n3. Each bullet point must start with a **Bold Keyword or Phrase** followed by a brief, coherent explanation of the similarity.\n4. Use perfect capitalization and grammar.\n5. Keep it extremely neat and avoid any "extra words" or conversational filler.' 
+        },
+        { 
+          role: 'user', 
+          content: `Prompt: ${prompt}\n\nChatGPT Response: ${responses.chatGPT}\n\nClaude Response: ${responses.claude}` 
+        }
+      ],
+    });
+
+    const similarities = synthesisResponse.data.choices?.[0]?.message?.content;
 
     res.json({ responses, similarities });
   } catch (error) {
