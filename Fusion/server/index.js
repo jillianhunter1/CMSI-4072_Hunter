@@ -2,9 +2,14 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
+const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
+const { sequelize, User, History } = require("./db");
 
 const app = express();
 const port = 3001;
+const JWT_SECRET = process.env.JWT_SECRET || "your-default-secret-change-this";
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 app.use(
   cors({
@@ -12,6 +17,22 @@ app.use(
   })
 );
 app.use(express.json());
+
+// Database logic (synced when running)
+
+// Middleware to verify JWT
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) return next(); // Token is optional for /api/prompt
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
 
 const openai = axios.create({
   baseURL: 'https://api.openai.com/v1',
@@ -37,7 +58,46 @@ const gemini = axios.create({
   },
 });
 
-app.post("/api/prompt", async (req, res) => {
+app.post("/api/auth/google", async (req, res) => {
+  const { credential } = req.body;
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name, picture } = payload;
+
+    const [user] = await User.findOrCreate({
+      where: { googleId },
+      defaults: { email, name, picture },
+    });
+
+    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    res.json({ token, user: { id: user.id, name: user.name, email: user.email, picture: user.picture } });
+  } catch (error) {
+    console.error("Auth error:", error);
+    res.status(401).json({ error: "Invalid Google token" });
+  }
+});
+
+app.get("/api/history", authenticateToken, async (req, res) => {
+  if (!req.user) return res.status(401).json({ error: "Unauthorized" });
+  try {
+    const history = await History.findAll({
+      where: { UserId: req.user.id },
+      order: [["createdAt", "DESC"]],
+    });
+    res.json(history);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch history" });
+  }
+});
+
+app.post("/api/prompt", authenticateToken, async (req, res) => {
   const { prompt } = req.body;
 
   try {
@@ -98,6 +158,18 @@ app.post("/api/prompt", async (req, res) => {
       similarities = "Need at least two successful model responses to synthesize similarities.";
     }
 
+    // Save to history if user is logged in
+    if (req.user) {
+      await History.create({
+        UserId: req.user.id,
+        prompt,
+        chatGPTResponse: responses.chatGPT,
+        claudeResponse: responses.claude,
+        geminiResponse: responses.gemini,
+        similarities,
+      });
+    }
+
     res.json({ responses, similarities });
   } catch (error) {
     console.error('Unexpected Error:', error);
@@ -107,6 +179,13 @@ app.post("/api/prompt", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+if (require.main === module) {
+  sequelize.sync().then(() => {
+    console.log("Database synced");
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  });
+}
+
+module.exports = app;
