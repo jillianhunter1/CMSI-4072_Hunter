@@ -13,8 +13,9 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!prompt.trim()) return;
+    if (e) e.preventDefault();
+    if (!prompt.trim() || loading) return;
+    
     setError(null);
     setResponses(null);
     setSimilarities('');
@@ -36,6 +37,13 @@ function App() {
     setError(null);
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
   return (
     <div className={`App ${responses ? 'results-loaded' : ''}`}>
       <header className="App-header">
@@ -46,15 +54,17 @@ function App() {
         <textarea
           value={prompt}
           onChange={handlePromptChange}
+          onKeyDown={handleKeyDown}
           placeholder="Type your prompt here..."
           disabled={loading}
+          autoFocus
         />
         <button type="submit" disabled={loading}>
           {loading ? (
             <span className="loader-dots">
               Thinking <span></span><span></span><span></span>
             </span>
-          ) : 'Fuse Answers'}
+          ) : 'Fuse'}
         </button>
       </form>
       {error && <div className="error-message">{error}</div>}
@@ -75,7 +85,7 @@ function App() {
         </div>
       )}
       <footer className="footer">
-        Created by Jillian Hunter for CMSI 4072
+        Created by Jillian Hunter | CMSI 4072
       </footer>
     </div>
   );
