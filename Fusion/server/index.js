@@ -30,68 +30,80 @@ const anthropic = axios.create({
   },
 });
 
-// const gemini = axios.create({
-//   baseURL: 'https://generativelanguage.googleapis.com/v1',
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'x-goog-api-key': process.env.GEMINI_API_KEY,
-//   },
-// });
+const gemini = axios.create({
+  baseURL: 'https://generativelanguage.googleapis.com/v1beta/models',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 app.post("/api/prompt", async (req, res) => {
   const { prompt } = req.body;
 
   try {
-    const [chatGPTResponse, claudeResponse] = await Promise.all([
+    const [chatGPTResult, claudeResult, geminiResult] = await Promise.allSettled([
       openai.post('/chat/completions', {
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: prompt }],
       }),
       anthropic.post("/messages", {
-        model: "claude-3-haiku-20240307",
+        model: "claude-haiku-4-5-20251001",
         max_tokens: 1024,
         messages: [{ role: "user", content: prompt }],
       }),
-      // gemini.post('/models/gemini-pro:generateContent', {
-      //   contents: [{ parts: [{ text: prompt }] }],
-      // }),
+      gemini.post('/gemini-2.5-flash:generateContent?key=' + process.env.GEMINI_API_KEY, {
+        contents: [{ parts: [{ text: prompt }] }],
+      }),
     ]);
 
-    console.log('chatGPTResponse:', chatGPTResponse.data);
-    console.log('claudeResponse:', claudeResponse.data);
-
     const responses = {
-      chatGPT: chatGPTResponse.data.choices?.[0]?.message?.content,
-      claude: claudeResponse.data.content?.[0]?.text,
+      chatGPT: chatGPTResult.status === 'fulfilled' ? chatGPTResult.value.data.choices?.[0]?.message?.content : `Error: ${chatGPTResult.reason.response?.data?.error?.message || chatGPTResult.reason.message}`,
+      claude: claudeResult.status === 'fulfilled' ? claudeResult.value.data.content?.[0]?.text : `Error: ${claudeResult.reason.response?.data?.error?.message || claudeResult.reason.message}`,
+      gemini: geminiResult.status === 'fulfilled' ? geminiResult.value.data.candidates?.[0]?.content?.parts?.[0]?.text : `Error: ${geminiResult.reason.response?.data?.error?.message || geminiResult.reason.message}`,
     };
 
-    // Use OpenAI to synthesize a beautiful, formatted summary
-    const synthesisResponse = await openai.post('/chat/completions', {
-      model: 'gpt-3.5-turbo',
-      messages: [
-        { 
-          role: 'system', 
-          content: 'You are a high-precision entity extractor. Your ONLY task is to identify and list specific items or entities that appear in BOTH responses. \n\nSTRICT RULES:\n1. Output ONLY a bulleted list.\n2. NO FULL SENTENCES. NO EXPLANATIONS. NO VERBS.\n3. NO bolding and NO category headers.\n4. Each bullet must be 1-4 words maximum (e.g., "Harry Potter by J.K. Rowling").\n5. NO introductory or concluding text of any kind.\n6. DO NOT use words like "Both", "Shared", "Mentioned", or "Include".\n7. NO punctuation at the end of bullets.\n8. Return an empty string if no specific items overlap.' 
-        },
-        { 
-          role: 'user', 
-          content: `List the specific shared entities from these two responses:\n\n1: ${responses.chatGPT}\n\n2: ${responses.claude}` 
-        }
-      ],
-    });
+    if (chatGPTResult.status === 'rejected') console.error('ChatGPT Error:', chatGPTResult.reason.response?.data || chatGPTResult.reason.message);
+    if (claudeResult.status === 'rejected') {
+      console.error('Claude Full Error:', JSON.stringify(claudeResult.reason.response?.data, null, 2));
+    }
+    if (geminiResult.status === 'rejected') console.error('Gemini Error:', geminiResult.reason.response?.data || geminiResult.reason.message);
 
-    const similarities = synthesisResponse.data.choices?.[0]?.message?.content;
+    // Filter out error messages for synthesis
+    const validResponses = Object.entries(responses)
+      .filter(([_, content]) => !content.startsWith("Error:"))
+      .map(([name, content]) => `${name}: ${content}`);
+
+    let similarities = "";
+    if (validResponses.length >= 2) {
+      try {
+        const synthesisResponse = await openai.post('/chat/completions', {
+          model: 'gpt-3.5-turbo',
+          messages: [
+            { 
+              role: 'system', 
+              content: 'You are a high-precision entity extractor. Your ONLY task is to identify and list specific items or entities that appear in ALL provided responses. \n\nSTRICT RULES:\n1. Output ONLY a bulleted list.\n2. NO FULL SENTENCES. NO EXPLANATIONS. NO VERBS.\n3. NO bolding and NO category headers.\n4. Each bullet must be 1-4 words maximum.\n5. NO introductory or concluding text.\n6. Return an empty string if no specific items overlap.' 
+            },
+            { 
+              role: 'user', 
+              content: `List the specific shared entities from these responses:\n\n${validResponses.join('\n\n')}` 
+            }
+          ],
+        });
+        similarities = synthesisResponse.data.choices?.[0]?.message?.content;
+      } catch (synthesisError) {
+        console.error('Synthesis Error:', synthesisError.response?.data || synthesisError.message);
+        similarities = "Error synthesizing similarities.";
+      }
+    } else {
+      similarities = "Need at least two successful model responses to synthesize similarities.";
+    }
 
     res.json({ responses, similarities });
   } catch (error) {
-    if (error.response) {
-      console.error('Error during API call:', error.response.data);
-    } else {
-      console.error('Error during API call:', error.message);
-    }
+    console.error('Unexpected Error:', error);
     res
       .status(500)
-      .json({ error: "An error occurred while processing your request." });
+      .json({ error: "An unexpected error occurred." });
   }
 });
 

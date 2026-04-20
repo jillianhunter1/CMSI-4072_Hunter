@@ -70,6 +70,7 @@ function App() {
             <h2>Source Insights</h2>
             <Response title="ChatGPT" response={responses.chatGPT} />
             <Response title="Claude" response={responses.claude} />
+            <Response title="Gemini" response={responses.gemini} />
           </div>
         </div>
       )}
