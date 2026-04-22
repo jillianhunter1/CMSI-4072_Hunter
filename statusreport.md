@@ -17,3 +17,7 @@
 - Continued to try and implment Gemini, Running into some errors but should resolve.
 - My goal is to implement gemini and tune up the UI
 - No concerns 
+4/22
+  - WOOO finished!! I upodated the UI ALOT also wasa able to add in gemini and improved the Fusion report semantics.
+  - NO NEXT GOAL, DONE!!!
+  - No concerns :) Onto the poster session next 
