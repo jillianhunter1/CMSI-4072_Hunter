@@ -18,14 +18,12 @@ app.use(
 );
 app.use(express.json());
 
-// Database logic (synced when running)
 
-// Middleware to verify JWT
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  if (!token) return next(); // Token is optional for /api/prompt
+  if (!token) return next(); 
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
@@ -128,7 +126,6 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
     }
     if (geminiResult.status === 'rejected') console.error('Gemini Error:', geminiResult.reason.response?.data || geminiResult.reason.message);
 
-    // Filter out error messages for synthesis
     const validResponses = Object.entries(responses)
       .filter(([_, content]) => !content.startsWith("Error:"))
       .map(([name, content]) => `${name}: ${content}`);
@@ -158,7 +155,6 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
       similarities = "Need at least two successful model responses to synthesize similarities.";
     }
 
-    // Save to history if user is logged in
     if (req.user) {
       await History.create({
         UserId: req.user.id,

@@ -1,6 +1,5 @@
 const axios = require('axios');
 
-// Mock axios BEFORE requiring the app
 jest.mock('axios', () => {
   const mockAxiosInstance = {
     post: jest.fn(),
@@ -24,7 +23,6 @@ describe('Server API Tests', () => {
   test('POST /api/prompt should return responses from AI models', async () => {
     const mockAxiosInstance = axios.create();
     
-    // Mocking the responses for OpenAI, Anthropic, Gemini, and then the synthesis OpenAI call
     mockAxiosInstance.post
       .mockResolvedValueOnce({ data: { choices: [{ message: { content: 'ChatGPT response' } }] } }) // ChatGPT
       .mockResolvedValueOnce({ data: { content: [{ text: 'Claude response' }] } }) // Claude
@@ -47,7 +45,6 @@ describe('Server API Tests', () => {
   test('POST /api/prompt should handle AI model failures gracefully', async () => {
     const mockAxiosInstance = axios.create();
     
-    // ChatGPT succeeds, but others fail
     mockAxiosInstance.post
       .mockResolvedValueOnce({ data: { choices: [{ message: { content: 'ChatGPT response' } }] } }) // ChatGPT
       .mockRejectedValueOnce({ response: { data: { error: { message: 'Claude failed' } } } }) // Claude
