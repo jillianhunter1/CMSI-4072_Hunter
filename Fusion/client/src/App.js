@@ -30,7 +30,7 @@ function App() {
 
   const fetchHistory = async () => {
     try {
-      const res = await axios.get('http://localhost:3001/api/history', {
+      const res = await axios.get('/api/history', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setHistory(res.data);
@@ -41,7 +41,7 @@ function App() {
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
-      const res = await axios.post('http://localhost:3001/api/auth/google', {
+      const res = await axios.post('/api/auth/google', {
         credential: credentialResponse.credential,
       });
       const { token, user } = res.data;
@@ -72,7 +72,7 @@ function App() {
     setSimilarities('');
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:3001/api/prompt', 
+      const response = await axios.post('/api/prompt', 
         { prompt },
         { headers: token ? { Authorization: `Bearer ${token}` } : {} }
       );

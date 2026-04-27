@@ -13,7 +13,7 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
   })
 );
 app.use(express.json());
@@ -175,12 +175,16 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
   }
 });
 
+// Sync database
+sequelize.sync().then(() => {
+  console.log("Database synced");
+}).catch(err => {
+  console.error("Failed to sync database:", err);
+});
+
 if (require.main === module) {
-  sequelize.sync().then(() => {
-    console.log("Database synced");
-    app.listen(port, () => {
-      console.log(`Server is running on http://localhost:${port}`);
-    });
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
   });
 }
 
