@@ -1,57 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './App.css';
-import ReactMarkdown from 'react-markdown';
-import Response from './components/Response';
-import Sidebar from './components/Sidebar';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+import "./App.css";
+import ReactMarkdown from "react-markdown";
+import Response from "./components/Response";
+import Sidebar from "./components/Sidebar";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 
 function App() {
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState("");
   const [responses, setResponses] = useState(null);
-  const [similarities, setSimilarities] = useState('');
+  const [similarities, setSimilarities] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [history, setHistory] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "93600388287-hokvddnuqameqaafi3cbdu1ikaouufad.apps.googleusercontent.com";
+  const GOOGLE_CLIENT_ID =
+    process.env.REACT_APP_GOOGLE_CLIENT_ID ||
+    "93600388287-hokvddnuqameqaafi3cbdu1ikaouufad.apps.googleusercontent.com";
+
+  const fetchHistory = useCallback(async () => {
+    try {
+      const res = await axios.get("/api/history", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setHistory(res.data);
+    } catch (err) {
+      console.error("Failed to fetch history", err);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (token) {
       fetchHistory();
-      const savedUser = localStorage.getItem('user');
+      const savedUser = localStorage.getItem("user");
       if (savedUser) setUser(JSON.parse(savedUser));
     }
-  }, [token]);
-
-  const fetchHistory = async () => {
-    try {
-      const res = await axios.get('/api/history', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setHistory(res.data);
-    } catch (err) {
-      console.error('Failed to fetch history', err);
-    }
-  };
+  }, [token, fetchHistory]);
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
-      const res = await axios.post('/api/auth/google', {
+      const res = await axios.post("/api/auth/google", {
         credential: credentialResponse.credential,
       });
       const { token, user } = res.data;
       setToken(token);
       setUser(user);
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
     } catch (err) {
-      console.error('Login failed', err);
-      setError('Google Login failed. Please try again.');
+      console.error("Login failed", err);
+      setError("Google Login failed. Please try again.");
     }
   };
 
@@ -59,20 +62,21 @@ function App() {
     setToken(null);
     setUser(null);
     setHistory([]);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!prompt.trim() || loading) return;
-    
+
     setError(null);
     setResponses(null);
-    setSimilarities('');
+    setSimilarities("");
     setLoading(true);
     try {
-      const response = await axios.post('/api/prompt', 
+      const response = await axios.post(
+        "/api/prompt",
         { prompt },
         { headers: token ? { Authorization: `Bearer ${token}` } : {} }
       );
@@ -80,7 +84,7 @@ function App() {
       setSimilarities(response.data.similarities);
       if (token) fetchHistory();
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       setError(`An error occurred while fetching data. Please try again.`);
     } finally {
       setLoading(false);
@@ -100,10 +104,10 @@ function App() {
   const handlePromptChange = (e) => {
     setPrompt(e.target.value);
     setError(null);
-  }
+  };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit();
     }
@@ -111,13 +115,17 @@ function App() {
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <div className={`App ${responses ? 'results-loaded' : ''} ${sidebarOpen ? 'sidebar-open' : ''}`}>
-        <Sidebar 
-          user={user} 
-          history={history} 
+      <div
+        className={`App ${responses ? "results-loaded" : ""} ${
+          sidebarOpen ? "sidebar-open" : ""
+        }`}
+      >
+        <Sidebar
+          user={user}
+          history={history}
           onLogout={handleLogout}
           onLoginSuccess={handleLoginSuccess}
-          onLoginError={() => setError('Google Login failed')}
+          onLoginError={() => setError("Google Login failed")}
           onSelectHistory={onSelectHistory}
           isOpen={sidebarOpen}
           toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
@@ -139,9 +147,13 @@ function App() {
             <button type="submit" disabled={loading}>
               {loading ? (
                 <span className="loader-dots">
-                  Thinking <span></span><span></span><span></span>
+                  Thinking <span></span>
+                  <span></span>
+                  <span></span>
                 </span>
-              ) : 'Fuse'}
+              ) : (
+                "Fuse"
+              )}
             </button>
           </form>
           {error && <div className="error-message">{error}</div>}
