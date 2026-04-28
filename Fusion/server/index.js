@@ -13,20 +13,39 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: true,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["Authorization"],
   })
 );
+app.options("*", cors()); // Enable pre-flight for all routes
+
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  const authHeader = req.headers["authorization"];
+  console.log(`Authorization Header: ${authHeader}`);
+  next();
+});
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  if (!token) return next(); 
+  if (!token || token === "null" || token === "undefined") {
+    req.user = null;
+    return next();
+  }
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+    if (err) {
+      console.warn("JWT Verification Warning:", err.message);
+      req.user = null;
+      return next();
+    }
     req.user = user;
     next();
   });
@@ -50,7 +69,7 @@ const anthropic = axios.create({
 });
 
 const gemini = axios.create({
-  baseURL: 'https://generativelanguage.googleapis.com/v1beta/models',
+  baseURL: 'https://generativelanguage.googleapis.com/v1beta',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -78,12 +97,12 @@ app.post("/api/auth/google", async (req, res) => {
     res.json({ token, user: { id: user.id, name: user.name, email: user.email, picture: user.picture } });
   } catch (error) {
     console.error("Auth error:", error);
-    res.status(401).json({ error: "Invalid Google token" });
+    res.status(401).json({ error: "Invalid Google token: " + error.message });
   }
 });
 
 app.get("/api/history", authenticateToken, async (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Unauthorized" });
+  if (!req.user || !req.user.id) return res.status(401).json({ error: "Unauthorized" });
   try {
     const history = await History.findAll({
       where: { UserId: req.user.id },
@@ -91,7 +110,8 @@ app.get("/api/history", authenticateToken, async (req, res) => {
     });
     res.json(history);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch history" });
+    console.error("Fetch history error:", error);
+    res.status(500).json({ error: "Failed to fetch history: " + error.message });
   }
 });
 
@@ -105,29 +125,29 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
         messages: [{ role: 'user', content: prompt }],
       }),
       anthropic.post("/messages", {
-        model: "claude-haiku-4-5-20251001",
+        model: "claude-3-haiku-20240307",
         max_tokens: 1024,
         messages: [{ role: "user", content: prompt }],
       }),
-      gemini.post('/gemini-2.5-flash:generateContent?key=' + process.env.GEMINI_API_KEY, {
+      gemini.post('/models/gemini-1.5-flash:generateContent?key=' + process.env.GEMINI_API_KEY, {
         contents: [{ parts: [{ text: prompt }] }],
       }),
     ]);
 
     const responses = {
-      chatGPT: chatGPTResult.status === 'fulfilled' ? chatGPTResult.value.data.choices?.[0]?.message?.content : `Error: ${chatGPTResult.reason.response?.data?.error?.message || chatGPTResult.reason.message}`,
-      claude: claudeResult.status === 'fulfilled' ? claudeResult.value.data.content?.[0]?.text : `Error: ${claudeResult.reason.response?.data?.error?.message || claudeResult.reason.message}`,
-      gemini: geminiResult.status === 'fulfilled' ? geminiResult.value.data.candidates?.[0]?.content?.parts?.[0]?.text : `Error: ${geminiResult.reason.response?.data?.error?.message || geminiResult.reason.message}`,
+      chatGPT: (chatGPTResult.status === 'fulfilled' && chatGPTResult.value.data.choices?.[0]?.message?.content) || `Error: ${chatGPTResult.reason?.response?.data?.error?.message || chatGPTResult.reason?.message || "Unknown error"}`,
+      claude: (claudeResult.status === 'fulfilled' && claudeResult.value.data.content?.[0]?.text) || `Error: ${claudeResult.reason?.response?.data?.error?.message || claudeResult.reason?.message || "Unknown error"}`,
+      gemini: (geminiResult.status === 'fulfilled' && geminiResult.value.data.candidates?.[0]?.content?.parts?.[0]?.text) || `Error: ${geminiResult.reason?.response?.data?.error?.message || geminiResult.reason?.message || "Unknown error"}`,
     };
 
-    if (chatGPTResult.status === 'rejected') console.error('ChatGPT Error:', chatGPTResult.reason.response?.data || chatGPTResult.reason.message);
+    if (chatGPTResult.status === 'rejected') console.error('ChatGPT Error:', chatGPTResult.reason?.response?.data || chatGPTResult.reason?.message);
     if (claudeResult.status === 'rejected') {
-      console.error('Claude Full Error:', JSON.stringify(claudeResult.reason.response?.data, null, 2));
+      console.error('Claude Full Error:', JSON.stringify(claudeResult.reason?.response?.data, null, 2));
     }
-    if (geminiResult.status === 'rejected') console.error('Gemini Error:', geminiResult.reason.response?.data || geminiResult.reason.message);
+    if (geminiResult.status === 'rejected') console.error('Gemini Error:', geminiResult.reason?.response?.data || geminiResult.reason?.message);
 
     const validResponses = Object.entries(responses)
-      .filter(([_, content]) => !content.startsWith("Error:"))
+      .filter(([_, content]) => typeof content === 'string' && !content.startsWith("Error:"))
       .map(([name, content]) => `${name}: ${content}`);
 
     let similarities = "";
@@ -155,15 +175,19 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
       similarities = "Need at least two successful model responses to synthesize similarities.";
     }
 
-    if (req.user) {
-      await History.create({
-        UserId: req.user.id,
-        prompt,
-        chatGPTResponse: responses.chatGPT,
-        claudeResponse: responses.claude,
-        geminiResponse: responses.gemini,
-        similarities,
-      });
+    if (req.user && req.user.id) {
+      try {
+        await History.create({
+          UserId: req.user.id,
+          prompt,
+          chatGPTResponse: responses.chatGPT,
+          claudeResponse: responses.claude,
+          geminiResponse: responses.gemini,
+          similarities,
+        });
+      } catch (dbError) {
+        console.error('Database Error (History Create):', dbError);
+      }
     }
 
     res.json({ responses, similarities });

@@ -24,6 +24,7 @@ function App() {
     "93600388287-hokvddnuqameqaafi3cbdu1ikaouufad.apps.googleusercontent.com";
 
   const fetchHistory = useCallback(async () => {
+    if (!token || token === "null" || token === "undefined") return;
     try {
       const res = await axios.get("/api/history", {
         headers: { Authorization: `Bearer ${token}` },
