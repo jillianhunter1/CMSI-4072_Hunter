@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: require("path").join(__dirname, ".env") });
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
@@ -52,10 +52,10 @@ const authenticateToken = (req, res, next) => {
 };
 
 const openai = axios.create({
-  baseURL: 'https://api.openai.com/v1',
+  baseURL: "https://api.openai.com/v1",
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
   },
 });
 
@@ -69,9 +69,9 @@ const anthropic = axios.create({
 });
 
 const gemini = axios.create({
-  baseURL: 'https://generativelanguage.googleapis.com/v1beta',
+  baseURL: "https://generativelanguage.googleapis.com/v1beta",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -94,7 +94,15 @@ app.post("/api/auth/google", async (req, res) => {
       expiresIn: "24h",
     });
 
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email, picture: user.picture } });
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        picture: user.picture,
+      },
+    });
   } catch (error) {
     console.error("Auth error:", error);
     res.status(401).json({ error: "Invalid Google token: " + error.message });
@@ -102,7 +110,8 @@ app.post("/api/auth/google", async (req, res) => {
 });
 
 app.get("/api/history", authenticateToken, async (req, res) => {
-  if (!req.user || !req.user.id) return res.status(401).json({ error: "Unauthorized" });
+  if (!req.user || !req.user.id)
+    return res.status(401).json({ error: "Unauthorized" });
   try {
     const history = await History.findAll({
       where: { UserId: req.user.id },
@@ -111,7 +120,9 @@ app.get("/api/history", authenticateToken, async (req, res) => {
     res.json(history);
   } catch (error) {
     console.error("Fetch history error:", error);
-    res.status(500).json({ error: "Failed to fetch history: " + error.message });
+    res
+      .status(500)
+      .json({ error: "Failed to fetch history: " + error.message });
   }
 });
 
@@ -119,61 +130,107 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
   const { prompt } = req.body;
 
   try {
-    const [chatGPTResult, claudeResult, geminiResult] = await Promise.allSettled([
-      openai.post('/chat/completions', {
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: prompt }],
-      }),
-      anthropic.post("/messages", {
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 1024,
-        messages: [{ role: "user", content: prompt }],
-      }),
-      gemini.post('/models/gemini-flash-latest:generateContent?key=' + process.env.GEMINI_API_KEY, {
-        contents: [{ parts: [{ text: prompt }] }],
-      }),
-    ]);
+    const [chatGPTResult, claudeResult, geminiResult] =
+      await Promise.allSettled([
+        openai.post("/chat/completions", {
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: prompt }],
+        }),
+        anthropic.post("/messages", {
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 1024,
+          messages: [{ role: "user", content: prompt }],
+        }),
+        gemini.post(
+          "/models/gemini-flash-latest:generateContent?key=" +
+            process.env.GEMINI_API_KEY,
+          {
+            contents: [{ parts: [{ text: prompt }] }],
+          }
+        ),
+      ]);
 
     const responses = {
-      chatGPT: (chatGPTResult.status === 'fulfilled' && chatGPTResult.value.data.choices?.[0]?.message?.content) || `Error: ${chatGPTResult.reason?.response?.data?.error?.message || chatGPTResult.reason?.message || "Unknown error"}`,
-      claude: (claudeResult.status === 'fulfilled' && claudeResult.value.data.content?.[0]?.text) || `Error: ${claudeResult.reason?.response?.data?.error?.message || claudeResult.reason?.message || "Unknown error"}`,
-      gemini: (geminiResult.status === 'fulfilled' && geminiResult.value.data.candidates?.[0]?.content?.parts?.[0]?.text) || `Error: ${geminiResult.reason?.response?.data?.error?.message || geminiResult.reason?.message || "Unknown error"}`,
+      chatGPT:
+        (chatGPTResult.status === "fulfilled" &&
+          chatGPTResult.value.data.choices?.[0]?.message?.content) ||
+        `Error: ${
+          chatGPTResult.reason?.response?.data?.error?.message ||
+          chatGPTResult.reason?.message ||
+          "Unknown error"
+        }`,
+      claude:
+        (claudeResult.status === "fulfilled" &&
+          claudeResult.value.data.content?.[0]?.text) ||
+        `Error: ${
+          claudeResult.reason?.response?.data?.error?.message ||
+          claudeResult.reason?.message ||
+          "Unknown error"
+        }`,
+      gemini:
+        (geminiResult.status === "fulfilled" &&
+          geminiResult.value.data.candidates?.[0]?.content?.parts?.[0]?.text) ||
+        `Error: ${
+          geminiResult.reason?.response?.data?.error?.message ||
+          geminiResult.reason?.message ||
+          "Unknown error"
+        }`,
     };
 
-
-    if (chatGPTResult.status === 'rejected') console.error('ChatGPT Error:', chatGPTResult.reason?.response?.data || chatGPTResult.reason?.message);
-    if (claudeResult.status === 'rejected') {
-      console.error('Claude Full Error:', JSON.stringify(claudeResult.reason?.response?.data, null, 2));
+    if (chatGPTResult.status === "rejected")
+      console.error(
+        "ChatGPT Error:",
+        chatGPTResult.reason?.response?.data || chatGPTResult.reason?.message
+      );
+    if (claudeResult.status === "rejected") {
+      console.error(
+        "Claude Full Error:",
+        JSON.stringify(claudeResult.reason?.response?.data, null, 2)
+      );
     }
-    if (geminiResult.status === 'rejected') console.error('Gemini Error:', geminiResult.reason?.response?.data || geminiResult.reason?.message);
+    if (geminiResult.status === "rejected")
+      console.error(
+        "Gemini Error:",
+        geminiResult.reason?.response?.data || geminiResult.reason?.message
+      );
 
     const validResponses = Object.entries(responses)
-      .filter(([_, content]) => typeof content === 'string' && !content.startsWith("Error:"))
+      .filter(
+        ([_, content]) =>
+          typeof content === "string" && !content.startsWith("Error:")
+      )
       .map(([name, content]) => `${name}: ${content}`);
 
     let similarities = "";
     if (validResponses.length >= 2) {
       try {
-        const synthesisResponse = await openai.post('/chat/completions', {
-          model: 'gpt-3.5-turbo',
+        const synthesisResponse = await openai.post("/chat/completions", {
+          model: "gpt-3.5-turbo",
           messages: [
-            { 
-              role: 'system', 
-              content: 'You are a high-precision entity extractor. Your ONLY task is to identify and list specific items or entities that appear in ALL provided responses. \n\nSTRICT RULES:\n1. Output ONLY a bulleted list.\n2. NO FULL SENTENCES. NO EXPLANATIONS. NO VERBS.\n3. NO bolding and NO category headers.\n4. Each bullet must be 1-4 words maximum.\n5. NO introductory or concluding text.\n6. Return an empty string if no specific items overlap.' 
+            {
+              role: "system",
+              content:
+                "You are a high-precision entity extractor. Your ONLY task is to identify and list specific items or entities that appear in ALL provided responses. \n\nSTRICT RULES:\n1. Output ONLY a bulleted list.\n2. NO FULL SENTENCES. NO EXPLANATIONS. NO VERBS.\n3. NO bolding and NO category headers.\n4. Each bullet must be 1-4 words maximum.\n5. NO introductory or concluding text.\n6. Return an empty string if no specific items overlap.",
             },
-            { 
-              role: 'user', 
-              content: `List the specific shared entities from these responses:\n\n${validResponses.join('\n\n')}` 
-            }
+            {
+              role: "user",
+              content: `List the specific shared entities from these responses:\n\n${validResponses.join(
+                "\n\n"
+              )}`,
+            },
           ],
         });
         similarities = synthesisResponse.data.choices?.[0]?.message?.content;
       } catch (synthesisError) {
-        console.error('Synthesis Error:', synthesisError.response?.data || synthesisError.message);
+        console.error(
+          "Synthesis Error:",
+          synthesisError.response?.data || synthesisError.message
+        );
         similarities = "Error synthesizing similarities.";
       }
     } else {
-      similarities = "Need at least two successful model responses to synthesize similarities.";
+      similarities =
+        "Need at least two successful model responses to synthesize similarities.";
     }
 
     if (req.user && req.user.id) {
@@ -187,16 +244,14 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
           similarities,
         });
       } catch (dbError) {
-        console.error('Database Error (History Create):', dbError);
+        console.error("Database Error (History Create):", dbError);
       }
     }
 
     res.json({ responses, similarities });
   } catch (error) {
-    console.error('Unexpected Error:', error);
-    res
-      .status(500)
-      .json({ error: "An unexpected error occurred." });
+    console.error("Unexpected Error:", error);
+    res.status(500).json({ error: "An unexpected error occurred." });
   }
 });
 
@@ -205,7 +260,7 @@ const startServer = async () => {
   try {
     await sequelize.sync();
     console.log("Database synced");
-    
+
     if (require.main === module) {
       app.listen(port, () => {
         console.log(`Server is running on http://localhost:${port}`);
