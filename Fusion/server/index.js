@@ -20,7 +20,7 @@ app.use(
     exposedHeaders: ["Authorization"],
   })
 );
-app.options("*", cors()); // Enable pre-flight for all routes
+app.options(/.*/, cors()); // Enable pre-flight for all routes
 
 app.use(express.json());
 
@@ -125,11 +125,11 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
         messages: [{ role: 'user', content: prompt }],
       }),
       anthropic.post("/messages", {
-        model: "claude-3-haiku-20240307",
+        model: "claude-haiku-4-5-20251001",
         max_tokens: 1024,
         messages: [{ role: "user", content: prompt }],
       }),
-      gemini.post('/models/gemini-1.5-flash:generateContent?key=' + process.env.GEMINI_API_KEY, {
+      gemini.post('/models/gemini-flash-latest:generateContent?key=' + process.env.GEMINI_API_KEY, {
         contents: [{ parts: [{ text: prompt }] }],
       }),
     ]);
@@ -139,6 +139,7 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
       claude: (claudeResult.status === 'fulfilled' && claudeResult.value.data.content?.[0]?.text) || `Error: ${claudeResult.reason?.response?.data?.error?.message || claudeResult.reason?.message || "Unknown error"}`,
       gemini: (geminiResult.status === 'fulfilled' && geminiResult.value.data.candidates?.[0]?.content?.parts?.[0]?.text) || `Error: ${geminiResult.reason?.response?.data?.error?.message || geminiResult.reason?.message || "Unknown error"}`,
     };
+
 
     if (chatGPTResult.status === 'rejected') console.error('ChatGPT Error:', chatGPTResult.reason?.response?.data || chatGPTResult.reason?.message);
     if (claudeResult.status === 'rejected') {
@@ -199,17 +200,23 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
   }
 });
 
-// Sync database
-sequelize.sync().then(() => {
-  console.log("Database synced");
-}).catch(err => {
-  console.error("Failed to sync database:", err);
-});
+// Sync database and start server
+const startServer = async () => {
+  try {
+    await sequelize.sync();
+    console.log("Database synced");
+    
+    if (require.main === module) {
+      app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+      });
+    }
+  } catch (err) {
+    console.error("Failed to start server:", err);
+    process.exit(1);
+  }
+};
 
-if (require.main === module) {
-  app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-  });
-}
+startServer();
 
 module.exports = app;
