@@ -21,3 +21,8 @@
   - WOOO finished!! I upodated the UI ALOT also wasa able to add in gemini and improved the Fusion report semantics.
   - NO NEXT GOAL, DONE!!!
   - No concerns :) Onto the poster session next 
+ 
+5/4
+- No further goals, finished project
+- Was not able to deploy on vercel, ran into issues, so just running on local host
+- No concerns!!
