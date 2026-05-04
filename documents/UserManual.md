@@ -1,15 +1,10 @@
 # Fusion: The Multi-LLM Meta-Analysis Tool
 ## User Manual & Operating Guide
 
----
 
-### **Meet Marvin: Your Software Guide**
-Hello! I’m **Marvin**, your software semi-expert. I’ll be looking over your shoulder as you explore **Fusion**. My job is to make sure you don't just "use" the software, but truly master it. Whether you're a seasoned developer or someone who just wants better AI answers, I've got your back. Let’s get started!
-
----
 
 ## 1. Introduction
-**Fusion** is a powerful meta-analysis tool designed to aggregate and compare natural language responses from multiple Large Language Models (LLMs) simultaneously. By prompting ChatGPT, Claude, and Gemini at once, Fusion identifies points of agreement (the "Consensus") and filters out individual model "hallucinations" (confident inaccuracies).
+**Fusion** is a powerful meta-analysis tool designed to aggregate and compare natural language responses from multiple Large Language Models (LLMs) simultaneously. By prompting ChatGPT, Claude, and Gemini at once, Fusion identifies points of agreement (the "Consensus") and filters out individual model hallucinations.
 
 ### **Key Acronyms to Know**
 *   **LLM (Large Language Model):** An AI trained on vast amounts of text (e.g., ChatGPT).
@@ -29,24 +24,13 @@ Before we install, make sure your computer meets these needs:
 *   **Runtime:** Node.js version 18 or higher installed on your machine.
 
 ### **2.2 How to Install the Software**
-Marvin says: "Don't worry, we won't be messing with your registry. It’s a clean setup!"
 
-1.  **Download the Source:** Extract the `Fusion` project folder to a location of your choice (e.g., `/Documents/Fusion`).
+1.  **Download the Source:** Extract the `Fusion` project folder to a location of your choice.
 2.  **Open your Terminal:** On macOS, open 'Terminal'. On Windows, open 'Command Prompt' or 'PowerShell'.
 3.  **Navigate to the folder:** Use the command `cd` to enter the Fusion directory.
 4.  **Install Dependencies:**
     *   Type `cd server && npm install` and press Enter.
     *   Type `cd ../client && npm install` and press Enter.
-5.  **Configure Environment Variables:**
-    *   In the `server` folder, create a file named `.env`.
-    *   Add your API keys in this format:
-        ```text
-        OPENAI_API_KEY=your_key_here
-        CLAUDE_API_KEY=your_key_here
-        GEMINI_API_KEY=your_key_here
-        GOOGLE_CLIENT_ID=your_google_id
-        JWT_SECRET=a_random_secret_string
-        ```
 
 ### **2.3 How to Start the Software Execution**
 To bring Fusion to life, you need to start both the "Brain" (Server) and the "Face" (Client).
@@ -73,9 +57,8 @@ Fusion is portable! To uninstall:
 ## 3. Using Fusion
 
 ### **3.1 The Main Dashboard**
-When you first open Fusion, you’ll see a clean, dark-themed interface. 
+When you first open Fusion, you’ll see a clean interface. 
 
-*   **Marvin's Tip:** "Look at the sidebar on the left. That's where your history lives!"
 
 ### **3.2 Submitting a Prompt**
 1.  **Type your question:** Locate the large text area in the center that says "Type your prompt here...".
@@ -95,7 +78,6 @@ Once the AI responds, the screen will split:
 ---
 
 ## 4. Troubleshooting
-Marvin says: "Even the best robots get a little confused sometimes. Here's how to fix common hiccups."
 
 | Problem | Likely Cause | Solution |
 | :--- | :--- | :--- |
@@ -107,12 +89,11 @@ Marvin says: "Even the best robots get a little confused sometimes. Here's how t
 ---
 
 ## 5. Contact & Support
-If you encounter a problem that Marvin can't solve, please reach out to our lead engineer:
+If you encounter a problem, please reach out to the lead engineer:
 
 **Jillian Hunter**
 Project Lead, CMSI 4072
-Email: support@fusion-ai.example.com
-*Response time is typically within 24 hours during business days.*
+Email: jhunte221@lion.lmu.edu
 
 ---
 
