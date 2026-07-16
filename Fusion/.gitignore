@@ -1,5 +1,18 @@
-.vercel
-.env*.local
+# Secrets / env
 .env
+.env.*
+!.env.example
 client/.env
 server/.env
+
+# Dependencies
+node_modules/
+
+# Local database
+*.sqlite
+*.sqlite3
+
+# Vercel / build
+.vercel
+build/
+dist/
