@@ -23,6 +23,14 @@ function App() {
     process.env.REACT_APP_GOOGLE_CLIENT_ID ||
     "93600388287-hokvddnuqameqaafi3cbdu1ikaouufad.apps.googleusercontent.com";
 
+  const handleLogout = useCallback(() => {
+    setToken(null);
+    setUser(null);
+    setHistory([]);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  }, []);
+
   const fetchHistory = useCallback(async () => {
     if (!token || token === "null" || token === "undefined") return;
     try {
@@ -32,8 +40,11 @@ function App() {
       setHistory(res.data);
     } catch (err) {
       console.error("Failed to fetch history", err);
+      if (err.response && err.response.status === 401) {
+        handleLogout();
+      }
     }
-  }, [token]);
+  }, [token, handleLogout]);
 
   useEffect(() => {
     if (token) {
@@ -57,14 +68,6 @@ function App() {
       console.error("Login failed", err);
       setError("Google Login failed. Please try again.");
     }
-  };
-
-  const handleLogout = () => {
-    setToken(null);
-    setUser(null);
-    setHistory([]);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
   };
 
   const handleSubmit = async (e) => {
