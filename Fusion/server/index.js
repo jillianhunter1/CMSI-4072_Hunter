@@ -3,12 +3,21 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const { OAuth2Client } = require("google-auth-library");
 const { sequelize, User, History } = require("./db");
 
 const app = express();
 const port = 3001;
-const JWT_SECRET = process.env.JWT_SECRET || "your-default-secret-change-this";
+// Never ship a hardcoded/predictable secret. Require JWT_SECRET; if it is
+// missing, fall back to a random per-process secret (tokens won't survive a
+// restart, but there is no guessable secret baked into the source).
+const JWT_SECRET = process.env.JWT_SECRET || crypto.randomBytes(48).toString("hex");
+if (!process.env.JWT_SECRET) {
+  console.warn(
+    "WARNING: JWT_SECRET is not set. Using a random per-process secret; set JWT_SECRET in your .env for stable sessions."
+  );
+}
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 app.use(
@@ -26,8 +35,8 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  const authHeader = req.headers["authorization"];
-  console.log(`Authorization Header: ${authHeader}`);
+  // Do NOT log the raw Authorization header — it contains a bearer JWT.
+  console.log(`Authenticated request: ${req.headers["authorization"] ? "yes" : "no"}`);
   next();
 });
 
