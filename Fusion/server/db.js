@@ -1,15 +1,26 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const path = require('path');
 
-const storagePath = process.env.VERCEL 
-  ? '/tmp/database.sqlite' 
-  : path.join(__dirname, 'database.sqlite');
+// Use hosted Postgres in production (persists across deploys/cold starts),
+// fall back to a local SQLite file for development.
+const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: storagePath,
-  logging: false,
-});
+const sequelize = databaseUrl
+  ? new Sequelize(databaseUrl, {
+      dialect: 'postgres',
+      logging: false,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
+    })
+  : new Sequelize({
+      dialect: 'sqlite',
+      storage: process.env.VERCEL ? '/tmp/database.sqlite' : path.join(__dirname, 'database.sqlite'),
+      logging: false,
+    });
 
 const User = sequelize.define('User', {
   googleId: {

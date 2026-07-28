@@ -87,9 +87,19 @@ const gemini = axios.create({
 app.post("/api/auth/google", async (req, res) => {
   const { credential } = req.body;
   try {
+    const allowedAudiences = Array.from(
+      new Set([
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.REACT_APP_GOOGLE_CLIENT_ID,
+        "93600388287-f3g0je0bp9cvb1sn802pkuu8jg0lnj9m.apps.googleusercontent.com",
+        "170792763144-4rkifo89ufcgtjus7sk5ve3o9tmns3l3.apps.googleusercontent.com",
+        "93600388287-hokvddnuqameqaafi3cbdu1ikaouufad.apps.googleusercontent.com",
+      ].filter(Boolean))
+    );
+
     const ticket = await googleClient.verifyIdToken({
       idToken: credential,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: allowedAudiences,
     });
     const payload = ticket.getPayload();
     const { sub: googleId, email, name, picture } = payload;
@@ -264,23 +274,43 @@ app.post("/api/prompt", authenticateToken, async (req, res) => {
   }
 });
 
-// Sync database and start server
-const startServer = async () => {
-  try {
-    await sequelize.sync();
-    console.log("Database synced");
+let isDbSynced = false;
+let dbSyncPromise = null;
 
-    if (require.main === module) {
-      app.listen(port, () => {
-        console.log(`Server is running on http://localhost:${port}`);
-      });
-    }
-  } catch (err) {
-    console.error("Failed to start server:", err);
-    process.exit(1);
+const ensureDbSynced = async () => {
+  if (isDbSynced) return;
+  if (!dbSyncPromise) {
+    dbSyncPromise = sequelize.sync().then(() => {
+      isDbSynced = true;
+      console.log("Database synced successfully.");
+    }).catch((err) => {
+      dbSyncPromise = null;
+      console.error("Database sync failed:", err);
+      throw err;
+    });
   }
+  return dbSyncPromise;
 };
 
-startServer();
+app.use(async (req, res, next) => {
+  try {
+    await ensureDbSynced();
+    next();
+  } catch (err) {
+    console.error("Database connection error on request:", err);
+    res.status(500).json({ error: "Database initialization error: " + err.message });
+  }
+});
+
+// Sync database and start server (if executed directly)
+if (require.main === module) {
+  ensureDbSynced().then(() => {
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  }).catch((err) => {
+    console.error("Failed to start local server:", err);
+  });
+}
 
 module.exports = app;

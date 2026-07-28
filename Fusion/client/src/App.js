@@ -25,7 +25,7 @@ function App() {
 
   const GOOGLE_CLIENT_ID =
     process.env.REACT_APP_GOOGLE_CLIENT_ID ||
-    "93600388287-hokvddnuqameqaafi3cbdu1ikaouufad.apps.googleusercontent.com";
+    "93600388287-f3g0je0bp9cvb1sn802pkuu8jg0lnj9m.apps.googleusercontent.com";
 
   const handleLogout = useCallback(() => {
     setToken(null);
