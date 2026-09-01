@@ -11,34 +11,7 @@ The project is configured for a seamless deployment to Vercel using the provided
 1.  A [Vercel](https://vercel.com) account.
 2.  The [Vercel CLI](https://vercel.com/docs/cli) installed (optional, but recommended).
 
-### Steps to Deploy
 
-#### 1. Push to GitHub/GitLab/Bitbucket
-The easiest way to deploy is to push your code to a repository and link it to Vercel.
-
-#### 2. Create a New Project on Vercel
-- Go to the Vercel Dashboard and click "Add New" -> "Project".
-- Select your repository.
-- Vercel should automatically detect the `vercel.json` configuration.
-
-#### 3. Configure Environment Variables
-In the Vercel project settings, add the following environment variables:
-
-**For the Backend (Server):**
-- `OPENAI_API_KEY`: Your OpenAI API Key.
-- `CLAUDE_API_KEY`: Your Anthropic API Key.
-- `GEMINI_API_KEY`: Your Google Gemini API Key.
-- `GOOGLE_CLIENT_ID`: Your Google OAuth Client ID.
-- `JWT_SECRET`: A secret string for signing JWT tokens.
-- `CLIENT_URL`: The URL of your deployed site (or leave blank to use the default).
-
-**For the Frontend (Client):**
-- `REACT_APP_GOOGLE_CLIENT_ID`: Your Google OAuth Client ID (must match the backend).
-
-#### 4. Deploy
-Click "Deploy". Vercel will build the React app and set up the Node.js serverless functions.
-
----
 
 ## Important Note: Database Persistence
 
